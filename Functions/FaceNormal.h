@@ -1,4 +1,5 @@
 #include <vector>
+#include "../Classes/Vertex.h"
 
 //----------------------------------------------------------------
 //						Face Normal Function
@@ -8,7 +9,7 @@
 
 //Function for working out the normal of a face
 
-std::vector<float> faceNormal(float vertex1[3], float vertex2[3], float vertex3[3]){
+std::vector<float> faceNormal(Vertex vertex1[3],  vertex2[3], float vertex3[3]){
 
 	std::vector<float> faceNormal;
 

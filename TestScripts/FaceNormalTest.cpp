@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../Functions/FaceNormal.h"
 
+
 int main(){
 
 	float a[3] = {0.5, 0.5, 0.5};
