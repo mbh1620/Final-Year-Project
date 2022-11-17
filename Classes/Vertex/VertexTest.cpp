@@ -17,10 +17,22 @@ int main() {
 
 	Vertex vertex1 = Vertex(1, 1.0,1.2,3.2);
 
-	// if (vertex1.id == 1){
-	// 	std::cout << TestName <<" - Test 1 Passed!";
-	// } else {
-	// 	std::cout << TestName <<" - Test 1 Failed!";
-	// }
+	cout << "\n\n";
 
+	try {
+
+		if (1 == 1){
+		
+		cout << TestName <<" - Test 1 Passed! \n";
+		
+		} else {
+			throw 505;
+		}
+
+	} catch (...) {
+		cout << TestName << " - Test 1 Failed! \n";
+	}
+
+	cout << "\n\n";
+	
 }
