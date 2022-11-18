@@ -44,6 +44,61 @@ Vertex& Vertex:: operator=(const Vertex& a){
 	return *this;
 }
 
+Vertex& Vertex:: operator+(const Vertex& a){
+
+	x += a.x;
+	y += a.y;
+	z += a.z;
+
+	return *this;
+}
+
+Vertex& Vertex:: operator-(const Vertex& a){
+
+	x -= a.x;
+	y -= a.y;
+	z -= a.z;
+
+	return *this;
+
+}
+
+float Vertex::get(char c){
+
+	switch(c) {
+		case 'x':
+			return x;
+			break;
+		case 'y':
+			return y;
+			break;
+		case 'z':
+			return z;
+			break;
+		default:
+			return 0;
+	}
+}
+
+float Vertex::get_Id(){
+	return id;
+}
+
+void Vertex::set(char c, float value){
+
+	switch(c) {
+		case 'x':
+			x = value;
+			break;
+		case 'y':
+			y = value;
+			break;
+		case 'z':
+			z = value;
+			break;
+	}
+}
+
 
 
 

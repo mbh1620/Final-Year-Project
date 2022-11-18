@@ -55,7 +55,9 @@ public:
 
 	float get(char d);
 
-	float set(char d, float value);
+	float get_Id();
+
+	void set(char d, float value);
 
 	float dot(const Vertex& a);
 
