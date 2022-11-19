@@ -8,15 +8,30 @@
 
 // Write Testing Detail Here
 
+using namespace std;
+
 int main() {
 
-	string TestName = "[TestName]";
+	int passedCases = 0;
+	int totalCases = 0;
 
+	cout << "\n\n";
+
+	/*Copy per test case
+
+	string TestName = "[TestName]";
+	totalCases += 1;
 
 	if (passing testing conditions here){
-		std::cout << TestName <<" - Test 1 Passed!";
+		passedCases += 1
 	} else {
-		std::cout << TestName <<" - Test 1 Failed!";
+		cout << TestName << " FAILED! \n";
+		cout << "\n\n";
 	}
+
+	*/
+
+	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
+	cout << "\n\n";
 
 }

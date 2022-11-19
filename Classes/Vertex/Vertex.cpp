@@ -8,7 +8,7 @@
 
 /* 
 
-A Class used to store information about a 3D point in 3D space
+A Class used to store information about a 3D point in 3D space.
 
 */
 

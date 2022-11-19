@@ -2,7 +2,7 @@
 #include "Vertex.cpp"
 
 //----------------------------------------------------------------
-//					Testing Vertex Class
+//					Vertex Class Testing
 //----------------------------------------------------------------
 
 //Author: Matthew Haywood
@@ -13,13 +13,12 @@ using namespace std;
 
 int main() {
 
+	int passedCases = 0;
+	int totalCases = 0;
+
 	Vertex vertex1 = Vertex(1, 1.0,1.2,3.2);
 
 	string TestName = "Vertex - Test 1 get x";
-
-	int passedCases = 0;
-
-	int totalCases = 0;
 
 	cout << "\n\n";
 
