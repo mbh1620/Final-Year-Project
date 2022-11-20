@@ -46,7 +46,7 @@ private:
 
 	int id;
 
-	std::vector<Vertex> vertices;
+	std::vector<int> vertexIndices;
 
 	std::vector<Triangle> neighbouringTriangles;
 
@@ -54,7 +54,7 @@ private:
 
 public:
 
-	Triangle(int id, Vertex v1, Vertex v2, Vertex v3);
+	Triangle(int id, int v1, int v2, int v3);
 
 	~Triangle();
 
@@ -64,13 +64,16 @@ public:
 
 	int getId();
 
-	std::vector<Vertex> getVertices();
+	std::vector<int> getVertexIndices();
 
-	void setVertices(Vertex v1, Vertex v2, Vertex v3);
+	std::vector<Vertex> getVertices(std::vector<Vertex> &globalVertices);
+
+	void setVertices(int v1, int v2, int v3);
 
 	void setNeighbouringTriangles(std::vector<Triangle> _neighbouringTriangles);
 
-	// Vertex& getVertex(int vertexNumber);
+	void calculateNormal();
+
 };
 
 #endif

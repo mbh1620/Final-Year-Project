@@ -70,7 +70,7 @@ void ReadWriter::writeTriFile(std::string fileName){
 
 }
 
-std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Vertex>& vertices){
+std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Vertex>& vertices, std::vector<Triangle>& triangles){
 
 	std::ifstream file;
 
@@ -91,13 +91,24 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 						break;
 					case 'v':
 						if(line[1] == ' '){
-							Vertex vertexTemp = vertexParser(line, v);
-							vertices.push_back(vertexTemp);
+							Vertex tempVertex = vertexParser(line, v);
+
+							vertices.push_back(tempVertex);
+
 							v++;
 						}
 						break;
-					case 'f':
+					case 'f': {
+
+						std::vector<Triangle> outputTriangles;
+
+						outputTriangles = faceParser(line, t);
+
+						for(int i = 0; i < outputTriangles.size(); i++){
+							triangles.push_back(outputTriangles[i]);
+						}
 						t++;
+					}
 						break;
 					default:
 						break;
@@ -125,6 +136,65 @@ Vertex ReadWriter::vertexParser(std::string vertexLine, int vertexCount){
 
 	return outputVertex;
 
+}
+
+std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleCount){
+
+	std::vector<Triangle> outputTriangles;
+
+	std::vector<std::string> words = stringSplit(faceLine, ' ');
+
+	if(words.size() == 4){
+
+		std::vector<int> vertexIndices;
+
+		int index;
+
+		for( int i = 0; i < words.size(); i++){
+
+			if(words[i] != "f"){
+
+				index = std::stoi(stringSplit(words[i], '/')[0]);
+
+				vertexIndices.push_back(index);
+
+			} 
+
+		}
+
+		Triangle outputTriangle = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2]);
+
+		outputTriangles.push_back(outputTriangle);
+
+		return outputTriangles;
+
+	} else if(words.size() == 5){
+		std::vector<int> vertexIndices;
+
+		int index;
+
+		for( int i = 0; i < words.size(); i++){
+
+			if(words[i] != "f"){
+
+				index = std::stoi(stringSplit(words[i], '/')[0]);
+
+				vertexIndices.push_back(index);
+
+			} 
+
+		}
+
+		Triangle outputTriangle1 = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2]);
+		Triangle outputTriangle2 = Triangle(triangleCount, vertexIndices[0], vertexIndices[2], vertexIndices[3]);
+
+		outputTriangles.push_back(outputTriangle1);
+		outputTriangles.push_back(outputTriangle2);
+
+		return outputTriangles;
+	}
+
+	return outputTriangles;
 }
 
 void ReadWriter::writeObjFile(std::string fileName){

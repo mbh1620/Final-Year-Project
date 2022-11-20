@@ -80,7 +80,7 @@ float Vertex::get(char c){
 	}
 }
 
-float Vertex::get_Id(){
+float Vertex::getId(){
 	return id;
 }
 

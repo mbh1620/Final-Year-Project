@@ -12,12 +12,12 @@ A class used to store information about a triangle.
 
 */
 
-Triangle::Triangle(int _id, Vertex v1, Vertex v2, Vertex v3){
+Triangle::Triangle(int _id, int v1, int v2, int v3){
 
 	id = _id;
-	vertices.push_back(v1);
-	vertices.push_back(v2);
-	vertices.push_back(v3);
+	vertexIndices.push_back(v1);
+	vertexIndices.push_back(v2);
+	vertexIndices.push_back(v3);
 
 }
 
@@ -28,7 +28,7 @@ Triangle::~Triangle(){
 Triangle::Triangle(const Triangle& a){
 
 	id = a.id;
-	vertices = a.vertices;
+	vertexIndices = a.vertexIndices;
 	neighbouringTriangles = a.neighbouringTriangles;
 	triangleNormal = a.triangleNormal;
 
@@ -37,7 +37,6 @@ Triangle::Triangle(const Triangle& a){
 Triangle& Triangle:: operator=(const Triangle& a){
 	
 	id = a.id;
-	vertices = a.vertices;
 	neighbouringTriangles = a.neighbouringTriangles;
 	triangleNormal = a.triangleNormal;
 
@@ -50,22 +49,38 @@ int Triangle::getId(){
 
 }
 
-std::vector<Vertex> Triangle::getVertices(){
+std::vector<int> Triangle::getVertexIndices(){
 
-	return vertices;
+	return vertexIndices;
 }
 
-void Triangle::setVertices(Vertex v1, Vertex v2, Vertex v3){
+std::vector<Vertex> Triangle::getVertices(std::vector<Vertex> &vertices){
 
-	vertices.clear();
-	vertices.push_back(v1);
-	vertices.push_back(v2);
-	vertices.push_back(v3);
+	std::vector<Vertex> outputVertices;
+
+	outputVertices.push_back(vertices[vertexIndices[0]]);
+	outputVertices.push_back(vertices[vertexIndices[1]]);
+	outputVertices.push_back(vertices[vertexIndices[2]]);
+
+	return outputVertices;
+
+}
+
+void Triangle::setVertices(int v1, int v2, int v3){
+
+	vertexIndices.clear();
+	vertexIndices.push_back(v1);
+	vertexIndices.push_back(v2);
+	vertexIndices.push_back(v3);
 
 }
 
 void Triangle::setNeighbouringTriangles(std::vector<Triangle> _neighbouringTriangles){
 
 	neighbouringTriangles = _neighbouringTriangles;
+	
+}
+
+void Triangle::calculateNormal(){
 	
 }

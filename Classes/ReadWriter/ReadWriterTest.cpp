@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../Triangle/Triangle.hpp"
+#include "../Triangle/Triangle.cpp"
 #include "../ReadWriter/ReadWriter.cpp"
 
 
@@ -23,15 +23,9 @@ int main() {
 	ReadWriter objReader = ReadWriter();
 
 	std::vector<Vertex> vertices;
-	// std::vector<Triangle> triangles;
+	std::vector<Triangle> triangles;
 
-	// Triangle t1 = Triangle(1, v1,v2,v3);
-
-	objReader.readObjFile("testObjFile.obj", vertices);
-
-	for(int i = 0; i < vertices.size(); i++){
-		std::cout << vertices[i].get_Id() << " " << vertices[i].get('x') << " " << vertices[i].get('y') << " " << vertices[i].get('z') << "\n";
-	}
+	objReader.readObjFile("cube.obj", vertices, triangles);
 
 	/*Copy per test case
 

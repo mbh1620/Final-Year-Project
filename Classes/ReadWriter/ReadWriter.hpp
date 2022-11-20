@@ -44,9 +44,11 @@ public:
 
 	void writeTriFile(std::string fileName);
 
-	std::vector<Vertex> readObjFile(std::string fileName, std::vector<Vertex> &vertices);
+	std::vector<Vertex> readObjFile(std::string fileName, std::vector<Vertex> &vertices, std::vector<Triangle> &triangles);
 
 	Vertex vertexParser(std::string vertexLine, int vertexCount);
+
+	std::vector<Triangle> faceParser(std::string faceLine, int triangleCount);
 
 	void writeObjFile(std::string fileName);
 	

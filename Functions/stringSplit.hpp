@@ -35,14 +35,14 @@ std::vector<std::string> stringSplit(std::string inputString, char delimiter){
 
 	for(int i = 0; i < inputString.length(); i++){
 
-		word += inputString[i];
-
 		if(inputString[i] == delimiter){
 			
 			outputWords.push_back(word);
 
 			word = "";
 		
+		} else {
+			word += inputString[i];
 		}
 	}
 
