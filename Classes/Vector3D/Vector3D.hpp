@@ -45,6 +45,8 @@ private:
 
 public:
 
+	Vector3D();
+
 	Vector3D(int _id, float _x, float _y, float _z);
 
 	Vector3D(int _id, float _magnitude, float _x, float _y, float _z);
@@ -59,13 +61,19 @@ public:
 	
 	Vector3D& operator-(const Vector3D& a);
 
+	Vector3D& operator/(const int a);
+
 	int getId();
 
 	float getMagnitude();
 
 	std::vector<float> getNormalisedDirectionComponents();
 
+	void displayNormalisedDirectionComponents();
+
 	std::vector<float> getDirectionComponents();
+
+	void displayDirectionComponents();
 
 	void normaliseVector();
 

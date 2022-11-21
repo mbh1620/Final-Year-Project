@@ -43,9 +43,13 @@ int main() {
 
 	int TRIANGLE_ID = 1;
 
-	Triangle triangle1 = Triangle(TRIANGLE_ID, 0,1,2);
+	Triangle triangle1 = Triangle(TRIANGLE_ID, 0,1,2, globalVertices);
 
 	cout << triangle1.getVertices(globalVertices)[0].get('x') << triangle1.getVertices(globalVertices)[0].get('y');
+
+	cout << triangle1.getTriangleNormal().getMagnitude() << "\n";
+
+	cout << triangle1.getTriangleNormal().getNormalisedDirectionComponents()[0] << " " << triangle1.getTriangleNormal().getNormalisedDirectionComponents()[1] << " " << triangle1.getTriangleNormal().getNormalisedDirectionComponents()[2];
 
 	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
 	cout << "\n\n";

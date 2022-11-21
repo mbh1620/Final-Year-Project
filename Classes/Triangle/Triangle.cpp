@@ -12,12 +12,14 @@ A class used to store information about a triangle.
 
 */
 
-Triangle::Triangle(int _id, int v1, int v2, int v3){
+Triangle::Triangle(int _id, int v1, int v2, int v3, std::vector<Vertex> &vertices){
 
 	id = _id;
 	vertexIndices.push_back(v1);
 	vertexIndices.push_back(v2);
 	vertexIndices.push_back(v3);
+
+	calculateNormal(vertices);
 
 }
 
@@ -66,6 +68,12 @@ std::vector<Vertex> Triangle::getVertices(std::vector<Vertex> &vertices){
 
 }
 
+Vector3D& Triangle::getTriangleNormal(){
+
+	return this->triangleNormal;
+
+}
+
 void Triangle::setVertices(int v1, int v2, int v3){
 
 	vertexIndices.clear();
@@ -81,6 +89,15 @@ void Triangle::setNeighbouringTriangles(std::vector<Triangle> _neighbouringTrian
 	
 }
 
-void Triangle::calculateNormal(){
-	
+void Triangle::calculateNormal(std::vector<Vertex> &vertices){
+
+	Vector3D f1 = Vector3D(1, vertices[vertexIndices[0]].get('x'), vertices[vertexIndices[0]].get('y'), vertices[vertexIndices[0]].get('z'));
+	Vector3D f2 = Vector3D(1, vertices[vertexIndices[1]].get('x'), vertices[vertexIndices[1]].get('y'), vertices[vertexIndices[1]].get('z'));
+	Vector3D f3 = Vector3D(1, vertices[vertexIndices[2]].get('x'), vertices[vertexIndices[2]].get('y'), vertices[vertexIndices[2]].get('z'));
+
+	Vector3D vectorU = f2 - f1;
+	Vector3D vectorV = f3 - f1;
+
+	triangleNormal = vectorU.crossProduct(vectorV);
+	 
 }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include "ReadWriter.hpp"
@@ -102,7 +101,7 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 
 						std::vector<Triangle> outputTriangles;
 
-						outputTriangles = faceParser(line, t);
+						outputTriangles = faceParser(line, t, vertices);
 
 						for(int i = 0; i < outputTriangles.size(); i++){
 							triangles.push_back(outputTriangles[i]);
@@ -138,7 +137,7 @@ Vertex ReadWriter::vertexParser(std::string vertexLine, int vertexCount){
 
 }
 
-std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleCount){
+std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleCount, std::vector<Vertex> &vertices){
 
 	std::vector<Triangle> outputTriangles;
 
@@ -162,7 +161,7 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 
 		}
 
-		Triangle outputTriangle = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2]);
+		Triangle outputTriangle = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2], vertices);
 
 		outputTriangles.push_back(outputTriangle);
 
@@ -185,8 +184,8 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 
 		}
 
-		Triangle outputTriangle1 = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2]);
-		Triangle outputTriangle2 = Triangle(triangleCount, vertexIndices[0], vertexIndices[2], vertexIndices[3]);
+		Triangle outputTriangle1 = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2], vertices);
+		Triangle outputTriangle2 = Triangle(triangleCount, vertexIndices[0], vertexIndices[2], vertexIndices[3], vertices);
 
 		outputTriangles.push_back(outputTriangle1);
 		outputTriangles.push_back(outputTriangle2);

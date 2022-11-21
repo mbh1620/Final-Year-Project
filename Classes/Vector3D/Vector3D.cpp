@@ -15,6 +15,10 @@ with 3D Vectors.
 
 */
 
+Vector3D::Vector3D(){
+	
+}
+
 Vector3D::Vector3D(int _id, float _x, float _y, float _z){
 
 	//Constructor for an unormalized vector
@@ -23,9 +27,20 @@ Vector3D::Vector3D(int _id, float _x, float _y, float _z){
 	directionComponents.push_back(_y);
 	directionComponents.push_back(_z);
 
-	calculateMagnitude();
+	if(_x == 0.0 && _y == 0.0 && _z == 0.0){
 
-	normaliseVector();
+		directionComponentsNormalised.push_back(0.0);
+		directionComponentsNormalised.push_back(0.0);
+		directionComponentsNormalised.push_back(0.0);
+		magnitude = 0.0;
+
+	} else{
+
+		calculateMagnitude();
+
+		normaliseVector();
+
+	}
 
 }
 
@@ -86,6 +101,18 @@ Vector3D& Vector3D:: operator-(const Vector3D& a){
 	return *outputVector;
 }
 
+Vector3D& Vector3D:: operator/(const int a){
+
+	float xComponent = directionComponents[0] / a;
+	float yComponent = directionComponents[1] / a;
+	float zComponent = directionComponents[2] / a;
+
+	Vector3D *outputVector = new Vector3D(0, xComponent, yComponent, zComponent);
+
+	return *outputVector;
+
+}
+
 int Vector3D::getId(){
 
 	return id;
@@ -104,9 +131,21 @@ std::vector<float> Vector3D::getNormalisedDirectionComponents(){
 
 }
 
+void Vector3D::displayNormalisedDirectionComponents(){
+
+	std::cout << directionComponentsNormalised[0] << " " << directionComponentsNormalised[1] << " " << directionComponentsNormalised[2] << "\n";
+
+}
+
 std::vector<float> Vector3D::getDirectionComponents(){
 
 	return directionComponents;
+
+}
+
+void Vector3D::displayDirectionComponents(){
+
+	std::cout << directionComponents[0] << " " << directionComponents[1] << " " << directionComponents[2] << "\n";
 
 }
 
@@ -126,7 +165,7 @@ void Vector3D::calculateMagnitude(){
 
 float Vector3D::dotProduct(Vector3D& a){
 
-	return (a.directionComponents[0] * directionComponents[0]) + (a.directionComponents[1] * directionComponents[1]) + (a.directionComponents[2] * directionComponents[2]);
+	return (a.directionComponentsNormalised[0] * directionComponentsNormalised[0]) + (a.directionComponentsNormalised[1] * directionComponentsNormalised[1]) + (a.directionComponentsNormalised[2] * directionComponentsNormalised[2]);
 
 }
 

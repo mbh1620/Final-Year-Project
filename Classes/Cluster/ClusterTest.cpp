@@ -1,15 +1,14 @@
 #include <iostream>
-#include "../Triangle/Triangle.cpp"
+#include "../Cluster/Cluster.cpp"
 #include "../ReadWriter/ReadWriter.cpp"
 
-
 //----------------------------------------------------------------
-//						ReadWriter Class Testing
+//							Cluster Testing 
 //----------------------------------------------------------------
 
 //Author: Matthew Haywood
 
-// Testing the Functions of the Read and Writer Class
+// Write Testing Detail Here
 
 using namespace std;
 
@@ -30,6 +29,8 @@ int main() {
 
 	objReader.readObjFile("cube.obj", vertices, triangles);
 
+	Cluster cluster1 = Cluster(1, triangles[1]);
+
 	/*Copy per test case
 
 	string TestName = "[TestName]";
@@ -43,14 +44,6 @@ int main() {
 	}
 
 	*/
-
-	// for(int i = 0; i < triangles.size(); i++){
-	// 	cout << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[0] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[1] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[2] << "\n";
-	// }
-
-	Vector3D triangleDifference = triangles[0].getTriangleNormal() - triangles[1].getTriangleNormal();
-
-	triangleDifference.displayNormalisedDirectionComponents();
 
 	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
 	cout << "\n\n";

@@ -48,7 +48,7 @@ public:
 
 	Vertex vertexParser(std::string vertexLine, int vertexCount);
 
-	std::vector<Triangle> faceParser(std::string faceLine, int triangleCount);
+	std::vector<Triangle> faceParser(std::string faceLine, int triangleCount, std::vector<Vertex> &vertices);
 
 	void writeObjFile(std::string fileName);
 	
