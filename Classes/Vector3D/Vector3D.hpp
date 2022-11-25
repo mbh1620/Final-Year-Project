@@ -63,6 +63,10 @@ public:
 
 	Vector3D& operator/(const int a);
 
+	bool operator<(const Vector3D& a);
+
+	bool operator<=(const Vector3D& a);
+
 	int getId();
 
 	float getMagnitude();

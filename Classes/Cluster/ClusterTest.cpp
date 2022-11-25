@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../Cluster/Cluster.cpp"
 #include "../ReadWriter/ReadWriter.cpp"
+#include "../../Functions/assignNeighbouringTriangles.hpp"
+
 
 //----------------------------------------------------------------
 //							Cluster Testing 
@@ -27,9 +29,28 @@ int main() {
 
 	std::vector<Triangle> triangles;
 
-	objReader.readObjFile("cube.obj", vertices, triangles);
+	std::vector<Material> materials;
 
-	Cluster cluster1 = Cluster(1, triangles[1]);
+	Material material2 = Material("default");
+
+	material2.setKdParameter(0.3,0.5,0.6);
+
+	materials.push_back(material2);
+
+	objReader.readObjFile("plane.obj", vertices, triangles);
+
+	assignNeighbouringTriangles(triangles);
+
+	Cluster cluster1 = Cluster(1, triangles[2], 0.05);
+
+	cluster1.createCluster(triangles);
+
+	cluster1.colourCluster(materials, triangles);
+
+	cluster1.displayClusterTriangles();
+
+	objReader.writeObjFile("outputCube", vertices, triangles, materials, true, true);
+
 
 	/*Copy per test case
 

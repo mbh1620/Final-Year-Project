@@ -113,6 +113,32 @@ Vector3D& Vector3D:: operator/(const int a){
 
 }
 
+bool Vector3D:: operator<(const Vector3D& a){
+
+
+
+	if(abs(directionComponents[0]) < abs(a.directionComponents[0])
+		&& abs(directionComponents[1]) < abs(a.directionComponents[1])
+		&& abs(directionComponents[2]) < abs(a.directionComponents[2])){
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+bool Vector3D:: operator<=(const Vector3D& a){
+
+	if(directionComponents[0] <= a.directionComponents[0]
+		&& directionComponents[1] <= a.directionComponents[1]
+		&& directionComponents[2] <= a.directionComponents[2]){
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
 int Vector3D::getId(){
 
 	return id;

@@ -2,7 +2,8 @@
 #define TRIANGLE_H
 
 #include "../Vertex/Vertex.cpp"
-#include "../Vector3D/Vector3D.cpp"
+#include "../Vector3D/Vector3D.hpp"
+#include "../Material/Material.cpp"
 #include <vector>
 
 //----------------------------------------------------------------
@@ -51,6 +52,8 @@ private:
 
 	std::vector<Triangle> neighbouringTriangles;
 
+	Material triangleMaterial; 
+
 	Vector3D triangleNormal;
 
 public:
@@ -74,6 +77,18 @@ public:
 	void setVertices(int v1, int v2, int v3);
 
 	void setNeighbouringTriangles(std::vector<Triangle> _neighbouringTriangles);
+
+	void setNeighbouringTriangle(Triangle &neighbouringTriangle);
+
+	std::vector<Triangle> getNeighbouringTriangles();
+
+	void displayNeighbouringTriangles();
+
+	void setTriangleMaterial(Material _triangleMaterial);
+
+	Material getTriangleMaterial();
+
+	bool compareTriangleMaterial(const Triangle& a);
 
 	void calculateNormal(std::vector<Vertex> &globalVertices);
 

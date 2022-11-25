@@ -1,6 +1,9 @@
 #include <iostream>
-#include "../Triangle/Triangle.cpp"
+#include "../Triangle/Triangle.hpp"
+#include "../../Functions/assignNeighbouringTriangles.hpp"
 #include "../ReadWriter/ReadWriter.cpp"
+#include "../Cluster/Cluster.cpp"
+#include "../../Functions/createMultipleClusters.hpp"
 
 
 //----------------------------------------------------------------
@@ -28,9 +31,37 @@ int main() {
 
 	std::vector<Triangle> triangles;
 
-	objReader.readObjFile("cube.obj", vertices, triangles);
+	std::vector<Cluster> clusters;
 
-	/*Copy per test case
+	std::vector<Material> materials;
+
+	Material material1 = Material("Material1");
+
+	material1.setKdParameter(0.9,0.0,0.9);
+
+	Material material2 = Material("default");
+
+	material2.setKdParameter(0.3,0.5,0.6);
+
+	materials.push_back(material1);
+
+	materials.push_back(material2);
+
+	objReader.readObjFile("testBall.obj", vertices, triangles);
+
+	assignNeighbouringTriangles(triangles);
+
+	// createMultipleClusters(vertices, triangles, materials);
+	Cluster cluster1 = Cluster(1, triangles[7], 0.25);
+
+	cluster1.createCluster(triangles);
+
+	cluster1.colourCluster(materials, triangles);
+
+	cluster1.displayClusterTriangles();
+
+	objReader.writeObjFile("outputCube", vertices, triangles, materials, true, true);
+	/*Copy per test cases
 
 	string TestName = "[TestName]";
 	totalCases += 1;
@@ -47,10 +78,6 @@ int main() {
 	// for(int i = 0; i < triangles.size(); i++){
 	// 	cout << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[0] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[1] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[2] << "\n";
 	// }
-
-	Vector3D triangleDifference = triangles[0].getTriangleNormal() - triangles[1].getTriangleNormal();
-
-	triangleDifference.displayNormalisedDirectionComponents();
 
 	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
 	cout << "\n\n";

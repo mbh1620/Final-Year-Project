@@ -19,6 +19,12 @@ Triangle::Triangle(int _id, int v1, int v2, int v3, std::vector<Vertex> &vertice
 	vertexIndices.push_back(v2);
 	vertexIndices.push_back(v3);
 
+	Material defaultMaterial = Material("default");
+
+	defaultMaterial.setKdParameter(Vector3D(1, 0.8, 0.8, 0.8));
+
+	triangleMaterial = defaultMaterial;
+
 	calculateNormal(vertices);
 
 }
@@ -33,14 +39,17 @@ Triangle::Triangle(const Triangle& a){
 	vertexIndices = a.vertexIndices;
 	neighbouringTriangles = a.neighbouringTriangles;
 	triangleNormal = a.triangleNormal;
+	triangleMaterial = a.triangleMaterial;
 
 }
 
 Triangle& Triangle:: operator=(const Triangle& a){
 	
 	id = a.id;
+	vertexIndices = a.vertexIndices;
 	neighbouringTriangles = a.neighbouringTriangles;
 	triangleNormal = a.triangleNormal;
+	triangleMaterial = a.triangleMaterial;
 
 	return *this;
 }
@@ -87,6 +96,55 @@ void Triangle::setNeighbouringTriangles(std::vector<Triangle> _neighbouringTrian
 
 	neighbouringTriangles = _neighbouringTriangles;
 	
+}
+
+void Triangle::displayNeighbouringTriangles(){
+
+	for(int i = 0; i < neighbouringTriangles.size(); i++){
+		std::cout << neighbouringTriangles[i].getId() << " ";
+	}
+
+	std::cout << "\n";
+
+}
+
+void Triangle::setNeighbouringTriangle(Triangle &neighbouringTriangle){
+
+	if(neighbouringTriangles.size() < 3){
+		neighbouringTriangles.push_back(neighbouringTriangle);
+	} else {
+		std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
+		throw;
+	}
+
+}
+
+std::vector<Triangle> Triangle::getNeighbouringTriangles(){
+
+	return neighbouringTriangles;
+
+}
+
+void Triangle::setTriangleMaterial(Material _triangleMaterial){
+
+	triangleMaterial = _triangleMaterial;
+
+}
+
+Material Triangle::getTriangleMaterial(){
+
+	return triangleMaterial;
+
+}
+
+bool Triangle::compareTriangleMaterial(const Triangle& a){
+
+	if(triangleMaterial == a.triangleMaterial){
+		return true;
+	} else {
+		return false;
+	}
+
 }
 
 void Triangle::calculateNormal(std::vector<Vertex> &vertices){

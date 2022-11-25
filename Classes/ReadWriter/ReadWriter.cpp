@@ -75,8 +75,8 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 
 	std::string line;
 
-	int v;
-	int t;
+	int v = 0;
+	int t = 0;
 
 	if(checkFileType(".obj", fileName) == true){
 
@@ -106,7 +106,13 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 						for(int i = 0; i < outputTriangles.size(); i++){
 							triangles.push_back(outputTriangles[i]);
 						}
-						t++;
+
+						if(outputTriangles.size() == 1){
+							t++;
+						} else if( outputTriangles.size() == 2){
+							t += 2;
+						}
+					
 					}
 						break;
 					default:
@@ -185,8 +191,8 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 		}
 
 		Triangle outputTriangle1 = Triangle(triangleCount, vertexIndices[0], vertexIndices[1], vertexIndices[2], vertices);
-		Triangle outputTriangle2 = Triangle(triangleCount, vertexIndices[0], vertexIndices[2], vertexIndices[3], vertices);
-
+		Triangle outputTriangle2 = Triangle(triangleCount+1, vertexIndices[0], vertexIndices[2], vertexIndices[3], vertices);
+		
 		outputTriangles.push_back(outputTriangle1);
 		outputTriangles.push_back(outputTriangle2);
 
@@ -196,7 +202,84 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 	return outputTriangles;
 }
 
-void ReadWriter::writeObjFile(std::string fileName){
+void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertices, std::vector<Triangle>& triangles, std::vector<Material> &materials, bool materialFile, bool colourClusters){
+
+	std::ofstream file;
+
+	std::string objFileName = fileName + ".obj";
+
+	file.open(objFileName);
+
+	file << "# Matthew Haywood - Mesh Simplification Project output file.\n";
+
+	file << "# Electronic and Electrical Engineering, The University of Nottingham.\n";
+
+	file << "# Vertices: " << vertices.size() << " Triangles: " << triangles.size() << "\n" ;
+
+	file << "mtllib " + fileName + ".mtl\n";
+
+	file << "o Cube \n";
+
+	for(int i = 1; i < vertices.size(); i++){
+		file << "v " << float(vertices[i].get('x'))<< " " << float(vertices[i].get('y')) << " " << float(vertices[i].get('z')) << "\n";
+	}
+
+	for(int i = 0; i < triangles.size(); i++){
+
+		file << "vn " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[0] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[1] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[2] << "\n"; 
+
+	}
+
+	file << "\n";
+
+	std::vector<Triangle> trianglesCopy = triangles;
+
+	for(int i = 0; i < materials.size(); i++){
+
+		file << "g Cube_Cube_Material\n";
+		file << "usemtl " << materials[i].getMaterialName() << "\n";
+		file << "s off \n";
+
+		for(int j = 0; j < trianglesCopy.size(); j++){
+			if(trianglesCopy[j].getTriangleMaterial() == materials[i]){
+
+				file << "f " << trianglesCopy[j].getVertexIndices()[0] << "//" << trianglesCopy[j].getId()+1 << " " << trianglesCopy[j].getVertexIndices()[1] << "//" << trianglesCopy[j].getId()+1 << " " << trianglesCopy[j].getVertexIndices()[2] << "//" << trianglesCopy[j].getId()+1 << "\n";
+
+			}
+		}
+
+		file << "\n";
+	}
+
+	file.close();
+
+	if(materialFile == true){
+
+		std::string mtlFileName = fileName + ".mtl";
+
+		writeMtlFile(mtlFileName, materials);
+
+	}
+
+}
+
+void ReadWriter::writeMtlFile(std::string fileName, std::vector<Material> &materials){
+
+	std::ofstream file;
+
+	file.open(fileName);
+
+	file << "# Matthew Haywood - Mesh Simplification Project output Material File.\n";
+	file << "# Material1 \n\n";
+
+	for(int i = 0; i < materials.size(); i++){
+
+		file << "newmtl " << materials[i].getMaterialName() <<"\n";
+		file << "Kd " << materials[i].getKdParameter().getDirectionComponents()[0] << " " << materials[i].getKdParameter().getDirectionComponents()[1] << " " << materials[i].getKdParameter().getDirectionComponents()[2] << "\n";
+		file << "\n";
+	}
+
+	file.close();
 
 }
 
