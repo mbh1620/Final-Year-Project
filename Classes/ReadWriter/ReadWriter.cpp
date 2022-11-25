@@ -75,8 +75,8 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 
 	std::string line;
 
-	int v = 0;
-	int t = 0;
+	int v = 1;
+	int t = 1;
 
 	if(checkFileType(".obj", fileName) == true){
 
@@ -220,7 +220,9 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertice
 
 	file << "o Cube \n";
 
-	for(int i = 1; i < vertices.size(); i++){
+	vertices.erase(vertices.begin());
+
+	for(int i = 0; i < vertices.size(); i++){
 		file << "v " << float(vertices[i].get('x'))<< " " << float(vertices[i].get('y')) << " " << float(vertices[i].get('z')) << "\n";
 	}
 
@@ -234,11 +236,15 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertice
 
 	std::vector<Triangle> trianglesCopy = triangles;
 
+	trianglesCopy.erase(trianglesCopy.begin());
+
 	for(int i = 0; i < materials.size(); i++){
 
 		file << "g Cube_Cube_Material\n";
 		file << "usemtl " << materials[i].getMaterialName() << "\n";
 		file << "s off \n";
+
+		
 
 		for(int j = 0; j < trianglesCopy.size(); j++){
 			if(trianglesCopy[j].getTriangleMaterial() == materials[i]){

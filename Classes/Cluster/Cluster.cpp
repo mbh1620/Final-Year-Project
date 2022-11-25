@@ -73,11 +73,13 @@ void Cluster::createCluster(std::vector<Triangle> &triangleVector){
 
 	while(candidateTriangles.size() > 0){
 
-		if(checkTriangleAgainstClusterNormal(candidateTriangles.front()) == true && checkIfTriangleIsInVector(candidateTriangles.front(), triangleVector) == true){
+		if(checkTriangleAgainstClusterNormal(candidateTriangles.front()) == true && 
+			checkIfTriangleIsInCluster(candidateTriangles.front()) == false &&
+			checkIfTriangleIsInVector(candidateTriangles.front(), triangleVector) == true){
 
 			clusterTriangles.push_back(candidateTriangles.front());
 
-			checkNeighbouringTriangles(candidateTriangles.front(), triangleVector);
+			addNeighbouringTriangles(candidateTriangles.front(), triangleVector);
 
 			candidateTriangles.pop_front();
 
@@ -120,7 +122,7 @@ std::vector<Triangle> Cluster::getClusterTriangles(){
 
 bool Cluster::checkIfTriangleIsInVector(Triangle &targetTriangle, std::vector<Triangle> triangleVector){
 
-	for(int i = 0; i < triangleVector.size(); i++){
+	for(int i = 1; i < triangleVector.size(); i++){
 
 		if(targetTriangle.getId() == triangleVector[i].getId()){
 			return true;
@@ -132,15 +134,11 @@ bool Cluster::checkIfTriangleIsInVector(Triangle &targetTriangle, std::vector<Tr
 
 }
 
-void Cluster::checkNeighbouringTriangles(Triangle &targetTriangle, std::vector<Triangle> triangleVector){
+void Cluster::addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Triangle> triangleVector){
 
 	for(int i = 0; i < triangleVector[targetTriangle.getId()].getNeighbouringTriangles().size(); i++){
 
-		if(checkIfTriangleIsInDiscardedTriangles(triangleVector[targetTriangle.getId()].getNeighbouringTriangles()[i]) == false && checkIfTriangleIsInCluster(triangleVector[targetTriangle.getId()].getNeighbouringTriangles()[i]) == false){
-
-			candidateTriangles.push_back(triangleVector[targetTriangle.getId()].getNeighbouringTriangles()[i]);
-
-		}
+		candidateTriangles.push_back(triangleVector[targetTriangle.getId()].getNeighbouringTriangles()[i]);
 		
 	}
 }

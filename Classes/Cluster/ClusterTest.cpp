@@ -28,6 +28,8 @@ int main() {
 	vertices.push_back(dummyVertex); // This is so the indexing starts from 1
 
 	std::vector<Triangle> triangles;
+	Triangle dummyTriangle = Triangle(-1,0,0,0, vertices);
+	triangles.push_back(dummyTriangle); //This is so that triangles start from 1 and does not conflict with obj file
 
 	std::vector<Material> materials;
 
@@ -37,11 +39,11 @@ int main() {
 
 	materials.push_back(material2);
 
-	objReader.readObjFile("plane.obj", vertices, triangles);
+	objReader.readObjFile("cube.obj", vertices, triangles);
 
 	assignNeighbouringTriangles(triangles);
 
-	Cluster cluster1 = Cluster(1, triangles[2], 0.05);
+	Cluster cluster1 = Cluster(1, triangles[1], 0.05);
 
 	cluster1.createCluster(triangles);
 

@@ -72,7 +72,7 @@ public:
 
 	void displayDiscardedTriangles();
 
-	void checkNeighbouringTriangles(Triangle &targetTriangle, std::vector<Triangle> triangleVector);
+	void addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Triangle> triangleVector);
 
 	bool checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle);
 
