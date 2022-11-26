@@ -46,6 +46,8 @@ void Cluster::updateAverageClusterNormal(){
 
 	sumOfNormals = sumOfNormals + clusterTriangles.back().getTriangleNormal();
 
+	countOfTriangles = countOfTriangles + 1;
+
 	averageClusterNormal = sumOfNormals / countOfTriangles;
 
 }
@@ -69,15 +71,21 @@ void Cluster::colourCluster(std::vector<Material> &globalMaterials, std::vector<
 
 }
 
-void Cluster::createCluster(std::vector<Triangle> &triangleVector){
+void Cluster::createCluster(std::vector<Triangle> &triangleVector, std::unordered_map<int, Triangle> &globalUsedTriangles){
 
 	while(candidateTriangles.size() > 0){
 
 		if(checkTriangleAgainstClusterNormal(candidateTriangles.front()) == true && 
 			checkIfTriangleIsInCluster(candidateTriangles.front()) == false &&
-			checkIfTriangleIsInVector(candidateTriangles.front(), triangleVector) == true){
+			checkIfTriangleIsInDiscardedTriangles(candidateTriangles.front(), globalUsedTriangles) == false){
 
 			clusterTriangles.push_back(candidateTriangles.front());
+
+			updateAverageClusterNormal();
+
+			std::pair<int, Triangle> discardedTriangle (candidateTriangles.front().getId(), candidateTriangles.front());
+
+			globalUsedTriangles.insert(discardedTriangle);
 
 			addNeighbouringTriangles(candidateTriangles.front(), triangleVector);
 
@@ -85,9 +93,9 @@ void Cluster::createCluster(std::vector<Triangle> &triangleVector){
 
 		} else {
 
-			std::pair<int, Triangle> discardedTriangle (candidateTriangles.front().getId(), candidateTriangles.front());
+			// std::pair<int, Triangle> discardedTriangle (candidateTriangles.front().getId(), candidateTriangles.front());
 
-			discardedTriangles.insert(discardedTriangle);
+			// discardedTriangles.insert(discardedTriangle);
 
 			candidateTriangles.pop_front();
 
@@ -109,7 +117,9 @@ bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle){
 void Cluster::displayClusterTriangles(){
 
 	for(int i = 0; i < clusterTriangles.size(); i++){
+
 		std::cout << clusterTriangles[i].getId() << "\n";
+
 	}
 
 }
@@ -117,20 +127,6 @@ void Cluster::displayClusterTriangles(){
 std::vector<Triangle> Cluster::getClusterTriangles(){
 
 	return clusterTriangles;
-
-}
-
-bool Cluster::checkIfTriangleIsInVector(Triangle &targetTriangle, std::vector<Triangle> triangleVector){
-
-	for(int i = 1; i < triangleVector.size(); i++){
-
-		if(targetTriangle.getId() == triangleVector[i].getId()){
-			return true;
-		}
-
-	}
-
-	return false;
 
 }
 
@@ -143,11 +139,11 @@ void Cluster::addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Tri
 	}
 }
 
-bool Cluster::checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle){
+bool Cluster::checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle, std::unordered_map<int, Triangle> &globalUsedTriangles){
 
-	std::unordered_map<int, Triangle>::iterator it = discardedTriangles.find(targetTriangle.getId());
+	std::unordered_map<int, Triangle>::iterator it = globalUsedTriangles.find(targetTriangle.getId());
 
-	if( discardedTriangles.end() != it){
+	if( globalUsedTriangles.end() != it){
 
 		return true;
 

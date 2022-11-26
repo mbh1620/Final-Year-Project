@@ -16,56 +16,64 @@ Function Description
 
 //Function Output
 
-void createMultipleClusters(std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials){
+bool checkInGlobalTriangles(int startingTriangleId, std::unordered_map<int, Triangle> globalUsedTriangles){
+	
+	std::unordered_map<int, Triangle>::iterator it = globalUsedTriangles.find(startingTriangleId);
+
+	if( globalUsedTriangles.end() != it){
+
+		return true;
+
+	} else {
+
+		return false;
+
+	}
+}
+
+void createMultipleClusters(std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, int numberOfClusters, float clusterTolerance){
 
 	std::vector<Triangle> trianglesCopy = triangles;
 
-	std::vector<Cluster> clusters; 
+	std::vector<Cluster> clusters;
 
-	while(trianglesCopy.size() > 1){
+	std::unordered_map<int, Triangle> globalUsedTriangles;
 
-		std::cout << "trianglesCopy \n";
+	int startingValue = 1;
 
-		for(int i = 1; i < trianglesCopy.size(); i++){
-			std::cout << trianglesCopy[i].getId() << " ";
-		}
+	int numOfTriangles = trianglesCopy.size()-1;
 
-		std::cout << "\n";
+	for(int i = 0; i < numberOfClusters; i++){
 
-		Cluster newCluster = Cluster(1, trianglesCopy[1], 0.05);
+		startingValue = rand() % numOfTriangles + 1;
 
-		newCluster.createCluster(trianglesCopy);
+		int count = 0;
 
-		std::cout << "clusterTriangles \n";
-
-		newCluster.displayClusterTriangles();
-
-		for(int i = 0; i < newCluster.getClusterTriangles().size(); i++){
-
-			for(int j = 1; j < trianglesCopy.size(); j++){
-				if(newCluster.getClusterTriangles()[i].getId() == trianglesCopy[j].getId()){
-					// std::cout << newCluster.getClusterTriangles()[i].getId() << " " << trianglesCopy[j].getId() << "\n";
-		
-					trianglesCopy.erase(trianglesCopy.begin() + j);
-				}
+		while(checkInGlobalTriangles(startingValue, globalUsedTriangles) == true){
+			startingValue = rand() % numOfTriangles + 1;
+			count += 1;
+			if(count > 10){
+				break;
 			}
 		}
 
-		newCluster.colourCluster(materials, triangles);
+		std::cout << "addingValue" << startingValue << "\n";
 
-		clusters.push_back(newCluster);
+		Cluster tempCluster = Cluster(1, trianglesCopy[startingValue], clusterTolerance);
+
+		tempCluster.createCluster(trianglesCopy, globalUsedTriangles);
+
+		tempCluster.colourCluster(materials, triangles);
+
+		tempCluster.displayClusterTriangles();
+
+		clusters.push_back(tempCluster);
 
 	}
-
-	for(int i = 0; i < clusters.size(); i++){
-		clusters[i].displayClusterTriangles();
-	}
-
-	// std::cout << clusters.size() << "\n";
-
-	
 
 }
+
+
 
 
 

@@ -47,40 +47,14 @@ int main() {
 
 	assignNeighbouringTriangles(triangles);
 
-	// createMultipleClusters(vertices, triangles, materials);
-	Cluster cluster1 = Cluster(1, triangles[1], 0.05);
+	std::vector<Triangle> trianglesCopy = triangles;
 
-	cluster1.createCluster(triangles);
+	std::unordered_map<int, Triangle> globalUsedTriangles;
 
-	cluster1.colourCluster(materials, triangles);
-
-	cluster1.displayClusterTriangles();
-
-	Cluster cluster2 = Cluster(1, triangles[3], 0.05);
-
-	cluster2.createCluster(triangles);
-
-	cluster2.colourCluster(materials, triangles);
-
-	cluster2.displayClusterTriangles();
-
-	Cluster cluster3 = Cluster(1, triangles[5], 0.05);
-
-	cluster3.createCluster(triangles);
-
-	cluster3.colourCluster(materials, triangles);
-
-	cluster3.displayClusterTriangles();
-
-	Cluster cluster4 = Cluster(1, triangles[7], 0.25);
-
-	cluster4.createCluster(triangles);
-
-	cluster4.colourCluster(materials, triangles);
-
-	cluster4.displayClusterTriangles();
+	createMultipleClusters(vertices, triangles, materials, 8, 0.18);
 
 	objReader.writeObjFile("outputCube", vertices, triangles, materials, true, true);
+	
 	/*Copy per test cases
 
 	string TestName = "[TestName]";

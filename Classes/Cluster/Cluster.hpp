@@ -34,8 +34,6 @@ private:
 
 	std::list<Triangle> candidateTriangles;
 
-	std::unordered_map<int, Triangle> discardedTriangles;
-
 	std::vector<Triangle> clusterTriangles;
 
 	Vector3D averageClusterNormal;
@@ -60,7 +58,7 @@ public:
 
 	void colourCluster(std::vector<Material> &globalMaterials, std::vector<Triangle> &globalTriangles);
 
-	void createCluster(std::vector<Triangle> &triangleVector);
+	void createCluster(std::vector<Triangle> &triangleVector, std::unordered_map<int, Triangle> &globalUsedTriangles);
 
 	bool checkTriangleAgainstClusterNormal(Triangle triangle);
 
@@ -70,11 +68,9 @@ public:
 
 	bool checkIfTriangleIsInVector(Triangle &targetTriangle, std::vector<Triangle> triangleVector);
 
-	void displayDiscardedTriangles();
-
 	void addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Triangle> triangleVector);
 
-	bool checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle);
+	bool checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle, std::unordered_map<int, Triangle> &globalUsedTriangles);
 
 	bool checkIfTriangleIsInCluster(Triangle targetTriangle);
 
