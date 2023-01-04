@@ -2,6 +2,7 @@
 #define CLUSTER_H
 
 #include "../Triangle/Triangle.cpp"
+#include "../Edge/Edge.cpp"
 
 #include <unordered_map>
 #include <list>
@@ -36,6 +37,10 @@ private:
 
 	std::vector<Triangle> clusterTriangles;
 
+	std::vector<Triangle> outputTriangles;
+
+	std::vector<Edge> clusterEdges;
+
 	Vector3D averageClusterNormal;
 
 	Vector3D tolerance;
@@ -56,9 +61,19 @@ public:
 
 	void updateAverageClusterNormal();
 
+	Vector3D getClusterNormal();
+
 	void colourCluster(std::vector<Material> &globalMaterials, std::vector<Triangle> &globalTriangles);
 
-	void createCluster(std::vector<Triangle> &triangleVector, std::unordered_map<int, Triangle> &globalUsedTriangles);
+	void createCluster(std::vector<Triangle> &triangleVector, std::unordered_map<int, Triangle> &globalUsedTriangles, std::vector<Vertex> &globalVertices);
+
+	void inputEdges(Triangle triangle1, std::vector<Vertex> &globalVertices);
+
+	bool checkEdgeInList(Edge edge1, std::vector<Edge> &edgeList);
+
+	void displayEdges();
+
+	std::vector<Edge> getClusterEdges();
 
 	bool checkTriangleAgainstClusterNormal(Triangle triangle);
 
@@ -73,6 +88,12 @@ public:
 	bool checkIfTriangleIsInDiscardedTriangles(Triangle targetTriangle, std::unordered_map<int, Triangle> &globalUsedTriangles);
 
 	bool checkIfTriangleIsInCluster(Triangle targetTriangle);
+
+	void edgeCollapse(Edge edge1, std::vector<Vertex> &globalVertices);
+
+	std::vector<Triangle> generateOutputTriangles(std::vector<Vertex> &globalVertices);
+
+	// Edge Collapsing Functions Below
 
 };
 

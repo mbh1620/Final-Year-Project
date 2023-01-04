@@ -171,7 +171,7 @@ std::vector<float> Vector3D::getDirectionComponents(){
 
 void Vector3D::displayDirectionComponents(){
 
-	std::cout << directionComponents[0] << " " << directionComponents[1] << " " << directionComponents[2] << "\n";
+	// std::cout << directionComponents[0] << " " << directionComponents[1] << " " << directionComponents[2] << "\n";
 
 }
 
@@ -204,6 +204,19 @@ Vector3D Vector3D::crossProduct(Vector3D& a){
 	Vector3D outputVector = Vector3D(0, xComponent, yComponent, zComponent);
 
 	return outputVector;
+}
+
+Vector3D& Vector3D::distancePositive(Vector3D& a){
+
+	float xComponent = directionComponents[0] - a.directionComponents[0];
+	float yComponent = directionComponents[1] - a.directionComponents[1];
+	float zComponent = directionComponents[2] - a.directionComponents[2];
+
+	Vector3D *outputVector = new Vector3D(0, abs(xComponent), abs(yComponent), abs(zComponent));
+
+	return *outputVector;
+
+
 }
 
 

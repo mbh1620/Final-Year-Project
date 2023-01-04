@@ -89,6 +89,8 @@ public:
 
 	Vector3D crossProduct( Vector3D& a);
 
+	Vector3D& distancePositive( Vector3D& a);
+
 };
 
 #endif

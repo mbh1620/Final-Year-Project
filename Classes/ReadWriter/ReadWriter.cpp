@@ -226,7 +226,7 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertice
 		file << "v " << float(vertices[i].get('x'))<< " " << float(vertices[i].get('y')) << " " << float(vertices[i].get('z')) << "\n";
 	}
 
-	for(int i = 0; i < triangles.size(); i++){
+	for(int i = 1; i < triangles.size(); i++){
 
 		file << "vn " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[0] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[1] << " " << triangles[i].getTriangleNormal().getNormalisedDirectionComponents()[2] << "\n"; 
 
@@ -249,7 +249,7 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertice
 		for(int j = 0; j < trianglesCopy.size(); j++){
 			if(trianglesCopy[j].getTriangleMaterial() == materials[i]){
 
-				file << "f " << trianglesCopy[j].getVertexIndices()[0] << "//" << trianglesCopy[j].getId()+1 << " " << trianglesCopy[j].getVertexIndices()[1] << "//" << trianglesCopy[j].getId()+1 << " " << trianglesCopy[j].getVertexIndices()[2] << "//" << trianglesCopy[j].getId()+1 << "\n";
+				file << "f " << trianglesCopy[j].getVertexIndices()[0] << "//" << j+1 << " " << trianglesCopy[j].getVertexIndices()[1] << "//" << j+1 << " " << trianglesCopy[j].getVertexIndices()[2] << "//" << j+1 << "\n";
 
 			}
 		}

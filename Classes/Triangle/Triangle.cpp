@@ -83,7 +83,7 @@ Vector3D& Triangle::getTriangleNormal(){
 
 }
 
-void Triangle::setVertices(int v1, int v2, int v3){
+void Triangle::setVertexIndices(int v1, int v2, int v3){
 
 	vertexIndices.clear();
 	vertexIndices.push_back(v1);
@@ -92,10 +92,14 @@ void Triangle::setVertices(int v1, int v2, int v3){
 
 }
 
-void Triangle::setNeighbouringTriangles(std::vector<Triangle> _neighbouringTriangles){
+void Triangle::setNeighbouringTriangles(std::vector<Triangle> &_neighbouringTriangles){
 
-	neighbouringTriangles = _neighbouringTriangles;
-	
+	if(neighbouringTriangles.size() <= 3){
+		neighbouringTriangles = _neighbouringTriangles;
+	} else {
+		std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
+		throw;
+	}
 }
 
 void Triangle::displayNeighbouringTriangles(){
@@ -158,4 +162,38 @@ void Triangle::calculateNormal(std::vector<Vertex> &vertices){
 
 	triangleNormal = vectorU.crossProduct(vectorV);
 	 
+}
+
+void Triangle::calculateEdgeLengths(std::vector<Vertex> &vertices){
+
+	Vector3D f1 = Vector3D(1, vertices[vertexIndices[0]].get('x'), vertices[vertexIndices[0]].get('y'), vertices[vertexIndices[0]].get('z'));
+	Vector3D f2 = Vector3D(1, vertices[vertexIndices[1]].get('x'), vertices[vertexIndices[1]].get('y'), vertices[vertexIndices[1]].get('z'));
+	Vector3D f3 = Vector3D(1, vertices[vertexIndices[2]].get('x'), vertices[vertexIndices[2]].get('y'), vertices[vertexIndices[2]].get('z'));
+
+	Vector3D l1 = f2.distancePositive(f1);
+	Vector3D l2 = f3.distancePositive(f2);
+	Vector3D l3 = f1.distancePositive(f3);
+
+	edgeLengths.push_back(l1);
+	edgeLengths.push_back(l2);
+	edgeLengths.push_back(l3);
+
+}
+
+void Triangle::displayEdgeLengths(){
+
+	for(int i = 0; i < edgeLengths.size(); i++){
+
+		std::cout << "Edge " << i << "\n";
+
+		edgeLengths[i].displayDirectionComponents();
+
+	}
+
+}
+
+Vector3D Triangle::getEdgeLength(int lengthIndex){
+
+	return edgeLengths[lengthIndex];
+
 }

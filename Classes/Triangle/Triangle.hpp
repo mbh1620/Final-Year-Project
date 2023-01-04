@@ -56,6 +56,8 @@ private:
 
 	Vector3D triangleNormal;
 
+	std::vector<Vector3D> edgeLengths; 
+
 public:
 
 	Triangle(int id, int v1, int v2, int v3, std::vector<Vertex> &globalVertices);
@@ -74,9 +76,9 @@ public:
 
 	Vector3D& getTriangleNormal();
 
-	void setVertices(int v1, int v2, int v3);
+	void setVertexIndices(int v1, int v2, int v3);
 
-	void setNeighbouringTriangles(std::vector<Triangle> _neighbouringTriangles);
+	void setNeighbouringTriangles(std::vector<Triangle> &_neighbouringTriangles);
 
 	void setNeighbouringTriangle(Triangle &neighbouringTriangle);
 
@@ -91,6 +93,12 @@ public:
 	bool compareTriangleMaterial(const Triangle& a);
 
 	void calculateNormal(std::vector<Vertex> &globalVertices);
+
+	void calculateEdgeLengths(std::vector<Vertex> &globalVertices);
+
+	void displayEdgeLengths();
+
+	Vector3D getEdgeLength(int edgeIndex);
 
 };
 

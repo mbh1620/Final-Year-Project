@@ -61,7 +61,7 @@ int main() {
 	TestName = "Vertex - Test 4 getId";
 	totalCases += 1;
 
-	if (vertex1.get_Id() == 1){
+	if (vertex1.getId() == 1){
 		
 		passedCases += 1;
 		

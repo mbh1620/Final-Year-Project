@@ -39,20 +39,35 @@ int main() {
 
 	materials.push_back(material2);
 
-	objReader.readObjFile("cube.obj", vertices, triangles);
+	objReader.readObjFile("protrudingTestCube.obj", vertices, triangles);
 
 	assignNeighbouringTriangles(triangles);
 
-	Cluster cluster1 = Cluster(1, triangles[1], 0.05);
+	Cluster cluster1 = Cluster(1, triangles[5], 0.8);
 
-	cluster1.createCluster(triangles);
+	std::unordered_map<int, Triangle> globalUsedTriangles;
 
-	cluster1.colourCluster(materials, triangles);
+	cluster1.createCluster(triangles, globalUsedTriangles, vertices);
 
-	cluster1.displayClusterTriangles();
+	// cluster1.displayClusterTriangles();
 
-	objReader.writeObjFile("outputCube", vertices, triangles, materials, true, true);
+	cluster1.displayEdges();
 
+	std::vector<Edge> edges = cluster1.getClusterEdges();
+
+	cluster1.colourCluster(materials, triangles);	
+
+	std::vector<Triangle> outputTriangles;
+
+	outputTriangles.push_back(dummyTriangle);
+
+	std::vector<Triangle> producedTriangles = cluster1.generateOutputTriangles(vertices);
+
+	for(int i = 0; i < producedTriangles.size(); i++){
+		outputTriangles.push_back(producedTriangles[i]);
+	}
+
+	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, true, true);
 
 	/*Copy per test case
 
