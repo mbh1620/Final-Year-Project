@@ -50,7 +50,7 @@ public:
 
 	std::vector<Triangle> faceParser(std::string faceLine, int triangleCount, std::vector<Vertex> &vertices);
 
-	void writeObjFile(std::string fileName, std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, bool materialFile, bool colourClusters);
+	void writeObjFile(std::string fileName, std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, std::vector<Edge> &edges, bool materialFile, bool colourClusters);
 	
 	void writeMtlFile(std::string fileName, std::vector<Material> &materials);
 

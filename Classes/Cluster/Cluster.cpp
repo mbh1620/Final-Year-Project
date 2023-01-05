@@ -224,6 +224,19 @@ bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle){
 	}
 }
 
+bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle, float tolerance){
+
+	Vector3D difference = triangle.getTriangleNormal() - averageClusterNormal;
+
+	Vector3D toleranceVec = Vector3D(1, tolerance, tolerance, tolerance);
+
+	if(difference < toleranceVec){
+		return true;
+	} else {
+		return false;
+	}
+}
+
 void Cluster::displayClusterTriangles(){
 
 	for(int i = 0; i < clusterTriangles.size(); i++){
@@ -280,31 +293,95 @@ bool Cluster::checkIfTriangleIsInCluster(Triangle targetTriangle){
 	return false;
 }
 
-void Cluster::edgeCollapse(Edge edge1, std::vector<Vertex> &globalVertices){
+void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices){
 
 	//Connect all edges from one node of the edge to the other then pop the edge.
 
-	int node1 = edge1.getVertexIndex1();
-	int node2 = edge1.getVertexIndex2();
+	//node1 <---- node2 Edge contraction
 
-	//Move all edges from node2 to node1 
+	//For all edges that go to node2, now go to node1
 
-	for(int i = 0; i < clusterEdges.size(); i++){
+	if(reversed == true){
+
+		int node1 = clusterEdges[edge].getVertexIndex1();
+		int node2 = clusterEdges[edge].getVertexIndex2();
+
+		for(int i = 0; i < clusterEdges.size(); i++){
+
+			int v1 = clusterEdges[i].getVertexIndex1();
+			int v2 = clusterEdges[i].getVertexIndex2();
+
+			if(v1 == node1){
+				clusterEdges[i].setVertexIndex1(v1 - 1);
+			} 
+
+			if(v2 == node1){
+				clusterEdges[i].setVertexIndex2(v2 - 1);
+			}
+		}
+
+		globalVertices.erase(globalVertices.begin()+node1);
+
+		for(int i = 0; i < clusterEdges.size(); i++){
+
+		//For all vertex indices above removed node reducde by 1
 
 		int v1 = clusterEdges[i].getVertexIndex1();
 		int v2 = clusterEdges[i].getVertexIndex2();
 
-		if(v1 == node2){
-			clusterEdges[i].setVertexIndex1(node1);
+		if(v1 > node2){
+			clusterEdges[i].setVertexIndex1(v1 - 1);
 		}
 
-		if(v2 == node2){
-			clusterEdges[i].setVertexIndex2(node2);
+		if(v2 > node2){
+			clusterEdges[i].setVertexIndex2(v2 - 1);
 		}
+	}
+
+
+	} else {
+
+		int node1 = clusterEdges[edge].getVertexIndex1();
+		int node2 = clusterEdges[edge].getVertexIndex2();
+
+		for(int i = 0; i < clusterEdges.size(); i++){
+
+			int v1 = clusterEdges[i].getVertexIndex1();
+			int v2 = clusterEdges[i].getVertexIndex2();
+
+			if(v1 == node2){
+				clusterEdges[i].setVertexIndex1(node1);
+			} 
+
+			if(v2 == node2){
+				clusterEdges[i].setVertexIndex2(node1);
+			}
+
+		}
+
+		globalVertices.erase(globalVertices.begin()+node2);
+
+		for(int i = 0; i < clusterEdges.size(); i++){
+
+		//For all vertex indices above removed node reducde by 1
+
+		int v1 = clusterEdges[i].getVertexIndex1();
+		int v2 = clusterEdges[i].getVertexIndex2();
+
+		if(v1 > node2){
+			node2 -= 1;
+		}
+
+		if(v2 > node2){
+			node2 -= 1;
+		}
+	}
 
 	}
 
-	// clusterEdges.pop(edge1);
+	clusterEdges.erase(clusterEdges.begin()+edge);
+
+
 
 }
 
@@ -377,7 +454,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -396,7 +473,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -417,7 +494,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -437,13 +514,13 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
 									std::cout << triangle[0] << " " << triangle[1] << " " << triangle[2] << "\n";
 									outputTriangles.push_back(outputTriangle);
-									
+
 								}
 							}
 						}
@@ -454,6 +531,22 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 	}
 
 	return outputTriangles;
+
+}
+
+int Cluster::getSmallestEdgeIndex(){
+
+	float smallestValue = 100.0;
+	int smallestIndex = 0;
+
+	for( int i = 0; i < clusterEdges.size(); i++){
+		if(clusterEdges[i].getEdgeLength().getMagnitude() < smallestValue){
+			smallestValue = clusterEdges[i].getEdgeLength().getMagnitude();
+			smallestIndex = i;
+		}
+	}
+
+	return smallestIndex;
 
 }
 

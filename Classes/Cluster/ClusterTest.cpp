@@ -43,7 +43,7 @@ int main() {
 
 	assignNeighbouringTriangles(triangles);
 
-	Cluster cluster1 = Cluster(1, triangles[5], 0.8);
+	Cluster cluster1 = Cluster(1, triangles[11], 0.8);
 
 	std::unordered_map<int, Triangle> globalUsedTriangles;
 
@@ -53,10 +53,25 @@ int main() {
 
 	cluster1.displayEdges();
 
-	std::vector<Edge> edges = cluster1.getClusterEdges();
+	cluster1.colourCluster(materials, triangles);
 
-	cluster1.colourCluster(materials, triangles);	
+	int smallestIndex = cluster1.getSmallestEdgeIndex();
 
+	std::cout << "smallest index "<< smallestIndex;
+
+	// cluster1.edgeCollapse(1, vertices);
+	cluster1.edgeCollapse(17, false, vertices);
+	cluster1.edgeCollapse(8, true, vertices);
+	cluster1.edgeCollapse(7, false, vertices);
+	cluster1.edgeCollapse(1, true, vertices);
+	cluster1.edgeCollapse(5, false, vertices);
+
+	cluster1.displayEdges();
+	// cluster1.edgeCollapse(1, true, vertices);
+	// cluster1.edgeCollapse(7, false, vertices);
+	// cluster1.edgeCollapse(8, true, vertices);
+	// cluster1.edgeCollapse(1, true, vertices);
+	
 	std::vector<Triangle> outputTriangles;
 
 	outputTriangles.push_back(dummyTriangle);
@@ -67,7 +82,16 @@ int main() {
 		outputTriangles.push_back(producedTriangles[i]);
 	}
 
-	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, true, true);
+	std::vector<Edge> edges;
+
+	edges.push_back(Edge(1, 0,0, vertices));
+
+	for(int i = 0; i < cluster1.getClusterEdges().size(); i++){
+		edges.push_back(cluster1.getClusterEdges()[i]);
+	}
+
+
+	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, edges, true, true);
 
 	/*Copy per test case
 
@@ -87,3 +111,5 @@ int main() {
 	cout << "\n\n";
 
 }
+
+

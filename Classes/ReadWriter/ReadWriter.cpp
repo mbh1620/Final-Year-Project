@@ -202,7 +202,7 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 	return outputTriangles;
 }
 
-void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertices, std::vector<Triangle>& triangles, std::vector<Material> &materials, bool materialFile, bool colourClusters){
+void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, std::vector<Edge> &edges, bool materialFile, bool colourClusters){
 
 	std::ofstream file;
 
@@ -255,6 +255,11 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex>& vertice
 		}
 
 		file << "\n";
+	}
+
+	for(int i = 1; i < edges.size(); i++){
+
+		file << "l " << edges[i].getVertexIndex1() << " " <<edges[i].getVertexIndex2() << "\n";
 	}
 
 	file.close();
