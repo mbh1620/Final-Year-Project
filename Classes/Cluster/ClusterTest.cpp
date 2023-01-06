@@ -43,7 +43,7 @@ int main() {
 
 	assignNeighbouringTriangles(triangles);
 
-	Cluster cluster1 = Cluster(1, triangles[11], 0.8);
+	Cluster cluster1 = Cluster(1, triangles[11], 50);
 
 	std::unordered_map<int, Triangle> globalUsedTriangles;
 
@@ -59,11 +59,11 @@ int main() {
 
 	std::cout << "smallest index "<< smallestIndex;
 
-	cluster1.edgeCollapse(17, true, vertices);
-	cluster1.edgeCollapse(8, false, vertices);
-	cluster1.edgeCollapse(7, true, vertices);
-	cluster1.edgeCollapse(1, false, vertices);
-	cluster1.edgeCollapse(6, true, vertices);
+	// cluster1.edgeCollapse(17, true, vertices);
+	// cluster1.edgeCollapse(8, false, vertices);
+	// cluster1.edgeCollapse(7, true, vertices);
+	// cluster1.edgeCollapse(1, false, vertices);
+	// cluster1.edgeCollapse(6, true, vertices);
 	
 	cluster1.displayEdges();
 	
@@ -84,7 +84,6 @@ int main() {
 	for(int i = 0; i < cluster1.getClusterEdges().size(); i++){
 		edges.push_back(cluster1.getClusterEdges()[i]);
 	}
-
 
 	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, edges, true, true);
 

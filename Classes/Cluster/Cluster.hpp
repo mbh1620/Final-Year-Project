@@ -43,7 +43,7 @@ private:
 
 	Vector3D averageClusterNormal;
 
-	Vector3D tolerance;
+	float angleTolerance;
 
 	Vector3D sumOfNormals;
 
@@ -51,7 +51,7 @@ private:
 
 public:
 
-	Cluster(int id, Triangle &initialTriangle, float tolerance);
+	Cluster(int id, Triangle &initialTriangle, float angleTolerance);
 
 	~Cluster();
 

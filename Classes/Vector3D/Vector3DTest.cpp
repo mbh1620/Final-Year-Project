@@ -40,4 +40,13 @@ int main() {
 	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
 	cout << "\n\n";
 
+	Vector3D vector5 = Vector3D(1, -1, -1, -1);
+
+	Vector3D vector6 = Vector3D(2, 1, 1, 1);
+
+	float angleBetweenVectors = vector5.angleBetweenVectors(vector6);
+
+
+
+
 }

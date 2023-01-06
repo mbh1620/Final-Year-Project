@@ -115,7 +115,9 @@ Vector3D& Vector3D:: operator/(const int a){
 
 bool Vector3D:: operator<(const Vector3D& a){
 
+	//By using abs we could have 1,1,1 and -1,-1,-1 which would return true even though they are completely oppisite
 
+	//however if we had 
 
 	if(abs(directionComponents[0]) < abs(a.directionComponents[0])
 		&& abs(directionComponents[1]) < abs(a.directionComponents[1])
@@ -191,7 +193,7 @@ void Vector3D::calculateMagnitude(){
 
 float Vector3D::dotProduct(Vector3D& a){
 
-	return (a.directionComponentsNormalised[0] * directionComponentsNormalised[0]) + (a.directionComponentsNormalised[1] * directionComponentsNormalised[1]) + (a.directionComponentsNormalised[2] * directionComponentsNormalised[2]);
+	return (a.directionComponents[0] * directionComponents[0]) + (a.directionComponents[1] * directionComponents[1]) + (a.directionComponents[2] * directionComponents[2]);
 
 }
 
@@ -204,6 +206,15 @@ Vector3D Vector3D::crossProduct(Vector3D& a){
 	Vector3D outputVector = Vector3D(0, xComponent, yComponent, zComponent);
 
 	return outputVector;
+}
+
+float Vector3D::angleBetweenVectors(Vector3D& a){
+
+	float angle = acos(dotProduct(a)/ (magnitude * a.magnitude));
+		
+	angle = angle* (180/M_PI);
+
+	return angle;
 }
 
 Vector3D& Vector3D::distancePositive(Vector3D& a){

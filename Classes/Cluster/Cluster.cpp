@@ -60,11 +60,11 @@ bool triangleDuplicateChecker(std::vector<Triangle> triangles, int triangle[3]){
 	return true;
 }
 
-Cluster::Cluster(int _id, Triangle &initialTriangle, float _tolerance) {
+Cluster::Cluster(int _id, Triangle &initialTriangle, float _angleTolerance) {
 
 	id = _id;
 
-	tolerance = Vector3D(1, _tolerance, _tolerance, _tolerance);
+	angleTolerance = _angleTolerance;
 
 	candidateTriangles.push_back(initialTriangle);
 
@@ -215,22 +215,20 @@ std::vector<Edge> Cluster::getClusterEdges(){
 
 bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle){
 
-	Vector3D difference = triangle.getTriangleNormal() - averageClusterNormal;
+	float angleDifference = triangle.getTriangleNormal().angleBetweenVectors(averageClusterNormal);
 
-	if(difference < tolerance){
+	if(angleDifference < angleTolerance){
 		return true;
 	} else {
 		return false;
 	}
 }
 
-bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle, float tolerance){
+bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle, float angleTolerance){
 
-	Vector3D difference = triangle.getTriangleNormal() - averageClusterNormal;
+	float angleDifference = triangle.getTriangleNormal().angleBetweenVectors(averageClusterNormal);
 
-	Vector3D toleranceVec = Vector3D(1, tolerance, tolerance, tolerance);
-
-	if(difference < toleranceVec){
+	if(angleDifference < angleTolerance){
 		return true;
 	} else {
 		return false;
@@ -475,7 +473,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 70) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -494,7 +492,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 70) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -515,7 +513,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 70) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
@@ -535,7 +533,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 						Triangle outputTriangle = Triangle(1, triangle[0], triangle[1], triangle[2], globalVertices);
 
 						if(triangleChecker(triangle) == true){
-							if(checkTriangleAgainstClusterNormal(outputTriangle, 1.0) == true){
+							if(checkTriangleAgainstClusterNormal(outputTriangle, 70) == true){
 								if(triangleDuplicateChecker(outputTriangles, triangle) == true){
 								
 									std::cout << "Triangle Found!\n";
