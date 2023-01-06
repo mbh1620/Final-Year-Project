@@ -93,6 +93,8 @@ public:
 
 	void edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices);
 
+	void shiftVertexIndices(int fromIndex);
+
 	std::vector<Triangle> generateOutputTriangles(std::vector<Vertex> &globalVertices);
 
 	int getSmallestEdgeIndex();

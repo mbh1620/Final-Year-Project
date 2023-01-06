@@ -1,6 +1,6 @@
 # Matthew Haywood - Mesh Simplification Project output file.
 # Electronic and Electrical Engineering, The University of Nottingham.
-# Vertices: 9 Triangles: 1
+# Vertices: 9 Triangles: 3
 mtllib outputCube.mtl
 o Cube 
 v 1 1 -1
@@ -11,27 +11,21 @@ v 1 -1 1
 v -1 -1 1
 v -1 -1 -1
 v 1 -1 -1
+vn 1 0 0
+vn -1 -0 0
 
 g Cube_Cube_Material
 usemtl default
 s off 
+f 4//1 8//1 1//1
+f 8//2 4//2 5//2
 
 g Cube_Cube_Material
 usemtl material-1
 s off 
 
-l 4 4
-l 4 4
+l 4 8
 l 1 4
-l 4 1
-l 4 1
-l 4 1
-l 4 5
-l 5 4
-l 5 4
 l 8 1
-l 4 8
-l 4 8
-l 5 4
-l 4 8
+l 4 5
 l 5 8

@@ -301,6 +301,8 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 
 	//For all edges that go to node2, now go to node1
 
+	//A function for working out if a duplicate edge is created, if so pop that edge too.
+
 	if(reversed == true){
 
 		int node1 = clusterEdges[edge].getVertexIndex1();
@@ -312,32 +314,17 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 			int v2 = clusterEdges[i].getVertexIndex2();
 
 			if(v1 == node1){
-				clusterEdges[i].setVertexIndex1(v1 - 1);
+				clusterEdges[i].setVertexIndex1(node2);
 			} 
 
 			if(v2 == node1){
-				clusterEdges[i].setVertexIndex2(v2 - 1);
+				clusterEdges[i].setVertexIndex2(node2);
 			}
 		}
 
 		globalVertices.erase(globalVertices.begin()+node1);
 
-		for(int i = 0; i < clusterEdges.size(); i++){
-
-		//For all vertex indices above removed node reducde by 1
-
-		int v1 = clusterEdges[i].getVertexIndex1();
-		int v2 = clusterEdges[i].getVertexIndex2();
-
-		if(v1 > node2){
-			clusterEdges[i].setVertexIndex1(v1 - 1);
-		}
-
-		if(v2 > node2){
-			clusterEdges[i].setVertexIndex2(v2 - 1);
-		}
-	}
-
+		shiftVertexIndices(node1);
 
 	} else {
 
@@ -361,28 +348,62 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 
 		globalVertices.erase(globalVertices.begin()+node2);
 
-		for(int i = 0; i < clusterEdges.size(); i++){
-
-		//For all vertex indices above removed node reducde by 1
-
-		int v1 = clusterEdges[i].getVertexIndex1();
-		int v2 = clusterEdges[i].getVertexIndex2();
-
-		if(v1 > node2){
-			node2 -= 1;
-		}
-
-		if(v2 > node2){
-			node2 -= 1;
-		}
-	}
+		shiftVertexIndices(node2);
 
 	}
 
 	clusterEdges.erase(clusterEdges.begin()+edge);
 
+	for(int i = 0; i < clusterEdges.size(); i++){
 
+		int v1 = clusterEdges[i].getVertexIndex1();
+		int v2 = clusterEdges[i].getVertexIndex2();
 
+		if(v1 == v2){
+			
+			clusterEdges.erase(clusterEdges.begin()+i);
+
+		}
+
+		// if(v1 == 0 || v2 == 0){
+
+		// 	clusterEdges.erase(clusterEdges.begin()+i);
+
+		// 	shiftVertexIndices(i);
+
+		// }
+
+		for(int j = 0; j < clusterEdges.size(); j++){
+
+			int v3 = clusterEdges[j].getVertexIndex1();
+			int v4 = clusterEdges[j].getVertexIndex2();
+
+			if(i != j){
+				if((v1 == v3 && v2 == v4) || (v1 == v4 && v2 == v3) ){
+					clusterEdges.erase(clusterEdges.begin()+j);
+				}
+			}
+		}
+	}
+}
+
+void Cluster::shiftVertexIndices(int startIndex){
+
+	//Function to be used for when the globalVertices is reduced by 1
+
+	for(int i = 0; i < clusterEdges.size(); i++){
+
+		int v1 = clusterEdges[i].getVertexIndex1();
+		int v2 = clusterEdges[i].getVertexIndex2();
+
+		if(v1 > startIndex){
+			clusterEdges[i].setVertexIndex1(v1 - 1);
+		}
+
+		if(v2 > startIndex){
+			clusterEdges[i].setVertexIndex2(v2 - 1);
+		}
+	}
 }
 
 std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &globalVertices){
@@ -549,26 +570,3 @@ int Cluster::getSmallestEdgeIndex(){
 	return smallestIndex;
 
 }
-
-
-
-// bool Cluster::triangleDuplicateChecker(){
-// 	//Function for checking if a triangle is duplicated
-// }
-
-// void Cluster::triangleEdgeChecker(){
-
-// 	//Function for working out if a group of Edges is a triangle
-
-
-// }
-
-
-
-
-
-
-
-
-
-

@@ -59,18 +59,13 @@ int main() {
 
 	std::cout << "smallest index "<< smallestIndex;
 
-	// cluster1.edgeCollapse(1, vertices);
-	cluster1.edgeCollapse(17, false, vertices);
-	cluster1.edgeCollapse(8, true, vertices);
-	cluster1.edgeCollapse(7, false, vertices);
-	cluster1.edgeCollapse(1, true, vertices);
-	cluster1.edgeCollapse(5, false, vertices);
-
+	cluster1.edgeCollapse(17, true, vertices);
+	cluster1.edgeCollapse(8, false, vertices);
+	cluster1.edgeCollapse(7, true, vertices);
+	cluster1.edgeCollapse(1, false, vertices);
+	cluster1.edgeCollapse(6, true, vertices);
+	
 	cluster1.displayEdges();
-	// cluster1.edgeCollapse(1, true, vertices);
-	// cluster1.edgeCollapse(7, false, vertices);
-	// cluster1.edgeCollapse(8, true, vertices);
-	// cluster1.edgeCollapse(1, true, vertices);
 	
 	std::vector<Triangle> outputTriangles;
 
