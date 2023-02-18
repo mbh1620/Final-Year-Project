@@ -38,6 +38,7 @@ private:
 	float x;
 	float y;
 	float z;
+	bool edgeOfCluster;
 
 public:
 
@@ -58,6 +59,10 @@ public:
 	float getId();
 
 	void set(char d, float value);
+
+	bool getEdgeOfCluster();
+
+	void setEdgeOfCluster(bool _edgeOfCluster);
 
 };
 

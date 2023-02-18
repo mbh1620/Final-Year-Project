@@ -77,6 +77,8 @@ public:
 
 	void displayVertexIndices();
 
+	void reCalculateEdgeLength(std::vector<Vertex> &globalVertices);
+
 	Vector3D getEdgeLength();
 
 };

@@ -75,7 +75,7 @@ public:
 
 	std::vector<Edge> getClusterEdges();
 
-	bool checkTriangleAgainstClusterNormal(Triangle triangle);
+	bool checkTriangleAgainstClusterNormal(Triangle triangle, std::vector<Vertex> &globalVertices);
 
 	bool checkTriangleAgainstClusterNormal(Triangle triangle, float tolerance);
 
@@ -91,13 +91,21 @@ public:
 
 	bool checkIfTriangleIsInCluster(Triangle targetTriangle);
 
+	bool checkValidCollapse();
+
 	void edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices);
 
 	void shiftVertexIndices(int fromIndex);
 
+	void iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices);
+
+	void recalculateEdgeLengths(std::vector<Vertex> &globalVertices);
+
 	std::vector<Triangle> generateOutputTriangles(std::vector<Vertex> &globalVertices);
 
 	int getSmallestEdgeIndex();
+
+	void assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector<Vertex> &globalVertices);
 
 	// Edge Collapsing Functions Below
 

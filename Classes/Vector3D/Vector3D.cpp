@@ -210,9 +210,9 @@ Vector3D Vector3D::crossProduct(Vector3D& a){
 
 float Vector3D::angleBetweenVectors(Vector3D& a){
 
-	float angle = acos(dotProduct(a)/ (magnitude * a.magnitude));
+	float angle = acos(dotProduct(a)/(magnitude * a.magnitude));
 		
-	angle = angle* (180/M_PI);
+	angle = angle * (180/M_PI);
 
 	return angle;
 }

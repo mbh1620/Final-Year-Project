@@ -99,6 +99,18 @@ void Vertex::set(char c, float value){
 	}
 }
 
+bool Vertex::getEdgeOfCluster(){
+
+	return edgeOfCluster;
+
+}
+
+void Vertex::setEdgeOfCluster(bool _edgeOfCluster){
+
+	edgeOfCluster = _edgeOfCluster;
+
+}
+
 
 
 

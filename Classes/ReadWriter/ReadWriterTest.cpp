@@ -49,10 +49,6 @@ int main() {
 
 	std::vector<Triangle> trianglesCopy = triangles;
 
-	std::unordered_map<int, Triangle> globalUsedTriangles;
-
-	createMultipleClusters(vertices, triangles, materials, 8, 0.18);
-
 	objReader.writeObjFile("outputCube", vertices, triangles, materials, true, true);
 	
 	/*Copy per test cases

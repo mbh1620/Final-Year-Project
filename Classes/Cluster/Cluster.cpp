@@ -128,7 +128,7 @@ void Cluster::createCluster(std::vector<Triangle> &triangleVector, std::unordere
 
 	while(candidateTriangles.size() > 0){
 
-		if(checkTriangleAgainstClusterNormal(candidateTriangles.front()) == true && 
+		if(checkTriangleAgainstClusterNormal(candidateTriangles.front(), globalVertices) == true && 
 			checkIfTriangleIsInCluster(candidateTriangles.front()) == false &&
 			checkIfTriangleIsInDiscardedTriangles(candidateTriangles.front(), globalUsedTriangles) == false){
 
@@ -213,14 +213,18 @@ std::vector<Edge> Cluster::getClusterEdges(){
 	return clusterEdges;
 }
 
-bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle){
+bool Cluster::checkTriangleAgainstClusterNormal(Triangle triangle, std::vector<Vertex> &globalVertices){
 
 	float angleDifference = triangle.getTriangleNormal().angleBetweenVectors(averageClusterNormal);
 
 	if(angleDifference < angleTolerance){
 		return true;
 	} else {
+		
+		assignEdgeOfClusterVertices(triangle, globalVertices);
+
 		return false;
+
 	}
 }
 
@@ -291,15 +295,43 @@ bool Cluster::checkIfTriangleIsInCluster(Triangle targetTriangle){
 	return false;
 }
 
+bool Cluster::checkValidCollapse(){
+
+	//Check the collapse rules
+
+	//2 manifold without boundary
+
+	//
+
+
+	return true;
+
+}
+
 void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices){
 
 	//Connect all edges from one node of the edge to the other then pop the edge.
 
 	//node1 <---- node2 Edge contraction
 
-	//For all edges that go to node2, now go to node1
+	int node1 = clusterEdges[edge].getVertexIndex1();
+	int node2 = clusterEdges[edge].getVertexIndex2();
 
-	//A function for working out if a duplicate edge is created, if so pop that edge too.
+	if(globalVertices[node1].getEdgeOfCluster() == true && globalVertices[node2].getEdgeOfCluster()){
+		return;
+	} 
+
+	if(globalVertices[node1].getEdgeOfCluster() == true){
+
+		//Node2 collapse towards node1
+		reversed = false;
+
+	} else if (globalVertices[node2].getEdgeOfCluster() == true){
+
+		//Node1 collapse towards node2
+		reversed = true;
+
+	}
 
 	if(reversed == true){
 
@@ -363,21 +395,13 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 
 		}
 
-		// if(v1 == 0 || v2 == 0){
-
-		// 	clusterEdges.erase(clusterEdges.begin()+i);
-
-		// 	shiftVertexIndices(i);
-
-		// }
-
 		for(int j = 0; j < clusterEdges.size(); j++){
 
 			int v3 = clusterEdges[j].getVertexIndex1();
 			int v4 = clusterEdges[j].getVertexIndex2();
 
 			if(i != j){
-				if((v1 == v3 && v2 == v4) || (v1 == v4 && v2 == v3) ){
+				if((v1 == v3 && v2 == v4) || (v1 == v4 && v2 == v3)){
 					clusterEdges.erase(clusterEdges.begin()+j);
 				}
 			}
@@ -402,6 +426,28 @@ void Cluster::shiftVertexIndices(int startIndex){
 			clusterEdges[i].setVertexIndex2(v2 - 1);
 		}
 	}
+}
+
+void Cluster::iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices){
+
+	//Get smallest edge and collapse until there are only 5 edges left
+
+	while(clusterEdges.size() > 5){
+		edgeCollapse(getSmallestEdgeIndex(), false, globalVertices);
+		recalculateEdgeLengths(globalVertices);
+	}
+	
+
+}
+
+void Cluster::recalculateEdgeLengths(std::vector<Vertex> &globalVertices){
+
+	for(int i = 0; i < clusterEdges.size(); i++){
+
+		clusterEdges[i].reCalculateEdgeLength(globalVertices);
+
+	}
+
 }
 
 std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &globalVertices){
@@ -568,3 +614,35 @@ int Cluster::getSmallestEdgeIndex(){
 	return smallestIndex;
 
 }
+
+void Cluster::assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector<Vertex> &globalVertices){
+
+	//For vertices in the rejected Triangle assign the ones that are edge vertices
+
+	for(int i = 0; i < rejectedTriangle.getVertexIndices().size(); i++){
+
+		for(int j = 0; j < clusterTriangles.size(); j++){
+
+			if(rejectedTriangle.getVertexIndices()[i] == clusterTriangles[j].getVertexIndices()[0]){
+				globalVertices[rejectedTriangle.getVertexIndices()[i]].setEdgeOfCluster(true);
+			}
+
+			if(rejectedTriangle.getVertexIndices()[i] == clusterTriangles[j].getVertexIndices()[1]){
+				globalVertices[rejectedTriangle.getVertexIndices()[i]].setEdgeOfCluster(true);
+			}
+
+			if(rejectedTriangle.getVertexIndices()[i] == clusterTriangles[j].getVertexIndices()[2]){
+				globalVertices[rejectedTriangle.getVertexIndices()[i]].setEdgeOfCluster(true);
+			}
+
+		}
+	}
+}
+
+
+
+
+
+
+
+

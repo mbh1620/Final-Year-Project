@@ -39,15 +39,36 @@ int main() {
 
 	materials.push_back(material2);
 
-	objReader.readObjFile("protrudingTestCube.obj", vertices, triangles);
+	clock_t start = clock();
+
+	objReader.readObjFile("testCubeMoreDetailOneSide.obj", vertices, triangles);
+
+	std::cout << "Number of vertices: " << vertices.size() << "\n";
+	std::cout << "Number of triangles: " << triangles.size() << "\n";
+
+	clock_t end = clock();
+
+	std::cout << "Time Taken For ReadObjFile function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";
+
+	start = clock();
 
 	assignNeighbouringTriangles(triangles);
 
-	Cluster cluster1 = Cluster(1, triangles[11], 50);
+	end = clock();
+
+	std::cout << "Time Taken For assignNeighbouringTriangles function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";
+
+	Cluster cluster1 = Cluster(1, triangles[9], 70);
 
 	std::unordered_map<int, Triangle> globalUsedTriangles;
 
+	start = clock();
+
 	cluster1.createCluster(triangles, globalUsedTriangles, vertices);
+
+	end = clock();
+
+	std::cout << "Time Taken For createCluster function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";
 
 	// cluster1.displayClusterTriangles();
 
@@ -59,11 +80,24 @@ int main() {
 
 	std::cout << "smallest index "<< smallestIndex;
 
-	// cluster1.edgeCollapse(17, true, vertices);
-	// cluster1.edgeCollapse(8, false, vertices);
-	// cluster1.edgeCollapse(7, true, vertices);
-	// cluster1.edgeCollapse(1, false, vertices);
-	// cluster1.edgeCollapse(6, true, vertices);
+	int count = 0;
+	for(int i = 0; i < vertices.size(); i++){
+
+		std::cout << vertices[i].getEdgeOfCluster() << "\n";
+
+		count += vertices[i].getEdgeOfCluster();
+
+	}
+
+	std::cout << count;
+
+	start = clock();
+
+	cluster1.iterativelyEdgeCollapse(vertices);
+
+	end = clock();
+
+	std::cout << "Time Taken For iterativelyEdgeCollapse function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";
 	
 	cluster1.displayEdges();
 	
@@ -79,7 +113,7 @@ int main() {
 
 	std::vector<Edge> edges;
 
-	edges.push_back(Edge(1, 0,0, vertices));
+	edges.push_back(Edge(1, 0, 0, vertices));
 
 	for(int i = 0; i < cluster1.getClusterEdges().size(); i++){
 		edges.push_back(cluster1.getClusterEdges()[i]);
