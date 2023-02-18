@@ -1,0 +1,9 @@
+# Matthew Haywood - Mesh Simplification Project output Material File.
+# Material1 
+
+newmtl default
+Kd 0.3 0.5 0.6
+
+newmtl material-1
+Kd 7.82637e-06 0.131538 0.755605
+

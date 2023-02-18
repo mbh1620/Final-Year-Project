@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Material.cpp"
 
 //----------------------------------------------------------------
 //						Testing Template
@@ -30,6 +31,10 @@ int main() {
 	}
 
 	*/
+
+	Material material1 = Material("Wood");
+
+	material1.setKdParameter(0.8, 0.8, 0.8);
 
 	cout << passedCases << " / " << totalCases << " TestCases Passed! \n";
 	cout << "\n\n";

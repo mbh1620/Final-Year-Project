@@ -8,7 +8,7 @@
 
 /* 
 
-A Class used to store information about a 3D point in 3D space
+A Class used to store information about a 3D point in 3D space.
 
 */
 
@@ -80,7 +80,7 @@ float Vertex::get(char c){
 	}
 }
 
-float Vertex::get_Id(){
+float Vertex::getId(){
 	return id;
 }
 
@@ -97,6 +97,18 @@ void Vertex::set(char c, float value){
 			z = value;
 			break;
 	}
+}
+
+bool Vertex::getEdgeOfCluster(){
+
+	return edgeOfCluster;
+
+}
+
+void Vertex::setEdgeOfCluster(bool _edgeOfCluster){
+
+	edgeOfCluster = _edgeOfCluster;
+
 }
 
 

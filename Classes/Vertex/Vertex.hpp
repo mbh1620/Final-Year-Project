@@ -38,6 +38,7 @@ private:
 	float x;
 	float y;
 	float z;
+	bool edgeOfCluster;
 
 public:
 
@@ -55,13 +56,13 @@ public:
 
 	float get(char d);
 
-	float get_Id();
+	float getId();
 
 	void set(char d, float value);
 
-	float dot(const Vertex& a);
+	bool getEdgeOfCluster();
 
-	// Vector[3] cross(const Vector& b);
+	void setEdgeOfCluster(bool _edgeOfCluster);
 
 };
 
