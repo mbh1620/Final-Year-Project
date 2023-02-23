@@ -135,6 +135,9 @@ void Edge::reCalculateEdgeLength(std::vector<Vertex> &globalVertices){
 	Vector3D f2 = Vector3D(1, globalVertices[vertexIndex2].get('x'), globalVertices[vertexIndex2].get('y'), globalVertices[vertexIndex2].get('z'));
 
 	edgeLength = f2.distancePositive(f1);
+
+	std::cout <<  "edge length: " << edgeLength.getMagnitude() << "\n";
+
 }
 
 Vector3D Edge::getEdgeLength(){

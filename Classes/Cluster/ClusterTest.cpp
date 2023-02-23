@@ -105,7 +105,13 @@ int main() {
 
 	outputTriangles.push_back(dummyTriangle);
 
+	start = clock();
+
 	std::vector<Triangle> producedTriangles = cluster1.generateOutputTriangles(vertices);
+
+	end = clock();
+
+	std::cout << "Time Taken For generateOutputTriangles function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";	
 
 	for(int i = 0; i < producedTriangles.size(); i++){
 		outputTriangles.push_back(producedTriangles[i]);
@@ -119,7 +125,13 @@ int main() {
 		edges.push_back(cluster1.getClusterEdges()[i]);
 	}
 
+	start = clock();
+
 	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, edges, true, true);
+
+	end = clock();
+
+	std::cout << "Time Taken For writeObjFile function: " << (double)(clock()- start)/CLOCKS_PER_SEC << "s \n";	
 
 	/*Copy per test case
 

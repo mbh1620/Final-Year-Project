@@ -50,7 +50,7 @@ private:
 
 	std::vector<int> vertexIndices;
 
-	std::vector<Triangle> neighbouringTriangles;
+	std::vector<int> neighbouringTrianglesIndices;
 
 	Material triangleMaterial; 
 
@@ -78,11 +78,9 @@ public:
 
 	void setVertexIndices(int v1, int v2, int v3);
 
-	void setNeighbouringTriangles(std::vector<Triangle> &_neighbouringTriangles);
+	void setNeighbouringTriangleIndex(int neighbouringTriangleIndex);
 
-	void setNeighbouringTriangle(Triangle &neighbouringTriangle);
-
-	std::vector<Triangle> getNeighbouringTriangles();
+	std::vector<int> getNeighbouringTriangles();
 
 	void displayNeighbouringTriangles();
 

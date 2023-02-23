@@ -31,11 +31,17 @@ bool checkInGlobalTriangles(int startingTriangleId, std::unordered_map<int, Tria
 	}
 }
 
-void createMultipleClusters(std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, int numberOfClusters, float clusterTolerance){
+std::vector<Triangle> createMultipleClusters(std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, std::vector<Edge> &edges, int numberOfClusters, float clusterTolerance){
 
 	std::vector<Triangle> trianglesCopy = triangles;
 
 	std::vector<Cluster> clusters;
+
+	std::vector<Triangle> outputTriangles;
+
+	Triangle dummyTriangle = Triangle(-1,0,0,0, vertices);
+
+	outputTriangles.push_back(dummyTriangle);
 
 	std::unordered_map<int, Triangle> globalUsedTriangles;
 
@@ -45,31 +51,64 @@ void createMultipleClusters(std::vector<Vertex> &vertices, std::vector<Triangle>
 
 	for(int i = 0; i < numberOfClusters; i++){
 
-		startingValue = rand() % numOfTriangles + 1;
+		// startingValue = rand() % numOfTriangles + 1;
 
 		int count = 0;
 
-		while(checkInGlobalTriangles(startingValue, globalUsedTriangles) == true){
-			startingValue = rand() % numOfTriangles + 1;
-			count += 1;
-			if(count > 10){
-				break;
-			}
-		}
+		int startingValue = numOfTriangles/numberOfClusters * i;
 
-		std::cout << "addingValue" << startingValue << "\n";
+		std::cout << "Cluster: " << i << "starting Triangle: " << startingValue << "\n";
 
 		Cluster tempCluster = Cluster(1, trianglesCopy[startingValue], clusterTolerance);
 
-		tempCluster.createCluster(trianglesCopy, globalUsedTriangles);
+		tempCluster.createCluster(trianglesCopy, globalUsedTriangles, vertices);
 
-		tempCluster.colourCluster(materials, triangles);
+		tempCluster.colourCluster(materials, trianglesCopy);
 
-		tempCluster.displayClusterTriangles();
+		// tempCluster.displayClusterTriangles();
+
+		// count = 0;
+		// for(int i = 0; i < vertices.size(); i++){
+
+		// // std::cout << vertices[i].getEdgeOfCluster() << "\n";
+
+		// // count += vertices[i].getEdgeOfCluster();
+
+		// }
+
+		// std::cout << "STARTING THE ITERATIVE EDGE COLLAPSING HERE! " << i << "\n";
+
+		if(i == 5){
+
+			std::cout << "Cluster 5";
+
+			for(int z = 0; z < tempCluster.getClusterEdges().size(); z++){
+
+				std::cout << tempCluster.getClusterEdges()[z].getVertexIndex1() << "\n";
+
+			}
+
+		}
+
+		tempCluster.iterativelyEdgeCollapse(vertices, trianglesCopy); //Seem to be getting a segfault from this command
+
+		tempCluster.displayEdges();
+
+		std::vector<Triangle> tempTriangles = tempCluster.generateOutputTriangles(vertices);
+
+		for(int i = 0; i < tempTriangles.size(); i++){
+			outputTriangles.push_back(tempTriangles[i]);
+		}
+
+		// for(int i = 0; i < tempCluster.getClusterEdges().size(); i++){
+		// 	edges.push_back(tempCluster.getClusterEdges()[i]);
+		// }
 
 		clusters.push_back(tempCluster);
 
 	}
+
+	return outputTriangles;
 
 }
 
