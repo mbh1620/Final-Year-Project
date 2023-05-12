@@ -261,8 +261,8 @@ void Cluster::addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Tri
 
 	for(int i = 0; i < triangleVector[targetTriangle.getId()].getNeighbouringTriangles().size(); i++){
 
-		candidateTriangles.push_back(triangleVector[targetTriangle.getId()].getNeighbouringTriangles()[i]);
-		
+		candidateTriangles.push_back(triangleVector[targetTriangle.getNeighbouringTriangles()[i]]);
+
 	}
 }
 
@@ -308,7 +308,7 @@ bool Cluster::checkValidCollapse(){
 
 }
 
-void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices){
+void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Triangle> &triangles, std::vector<Vertex> &globalVertices){
 
 	//Connect all edges from one node of the edge to the other then pop the edge.
 
@@ -318,15 +318,24 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 	int node2 = clusterEdges[edge].getVertexIndex2();
 
 	if(globalVertices[node1].getEdgeOfCluster() == true && globalVertices[node2].getEdgeOfCluster()){
+
+		std::cout << "Edge of Cluster Edge! will not collapse to maintain boundary of cluster! \n";
+
+		//We need to do something with this edge so that it does not get used in the next iteration otherwise an inifinity loop is caused.
+
 		return;
 	} 
 
 	if(globalVertices[node1].getEdgeOfCluster() == true){
 
+		std::cout << "edgeOfCluster Encountered! Reversing the collapsing Direction \n";
+
 		//Node2 collapse towards node1
 		reversed = false;
 
 	} else if (globalVertices[node2].getEdgeOfCluster() == true){
+
+		std::cout << "edgeOfCluster Encountered! Reversing the collapsing Direction \n";
 
 		//Node1 collapse towards node2
 		reversed = true;
@@ -352,9 +361,16 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 			}
 		}
 
-		globalVertices.erase(globalVertices.begin()+node1);
+		// if(node1 < globalVertices.size()){
+
+		std::cout << "globalVertices: " << globalVertices.size() << "node1: " << node1 << "\n";
+
+			globalVertices.erase(globalVertices.begin()+node1);
+				
+		// }
 
 		shiftVertexIndices(node1);
+		shiftTriangleVertexIndices(node1, triangles);
 
 	} else {
 
@@ -376,9 +392,18 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalV
 
 		}
 
-		globalVertices.erase(globalVertices.begin()+node2);
+		std::cout << "globalVertices: " << globalVertices.size() << " node2: " << node2 << "\n";
+
+		globalVertices.erase(globalVertices.begin()+node2); //THIS CODE HERE CAUSES THE SEGFAULT 11 - what is node2? as this is causing the proble
+
+		//The segfault is caused by trying to erase a node index which is above the size of the node list
+
+		//Think it is something to do with the shift vertex indices not being called properly.
+
+		std::cout << "TEST THAT CODE REACHES THIS POINT! TESTDaksda skdjas dajdkawj d" << edge << "\n";
 
 		shiftVertexIndices(node2);
+		shiftTriangleVertexIndices(node2, triangles);
 
 	}
 
@@ -428,16 +453,62 @@ void Cluster::shiftVertexIndices(int startIndex){
 	}
 }
 
-void Cluster::iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices){
+void Cluster::shiftTriangleVertexIndices(int startIndex, std::vector<Triangle> &globalTriangles){
+
+	for(int i = 0; i < globalTriangles.size(); i++){
+
+		int v1 = globalTriangles[i].getVertexIndices()[0]; 
+		int v2 = globalTriangles[i].getVertexIndices()[1]; 
+		int v3 = globalTriangles[i].getVertexIndices()[2];
+
+		if (v1 > startIndex){
+			v1 = v1 - 1;
+		}
+
+		if (v2 > startIndex){
+			v2 = v2 - 1;
+		}
+
+		if (v3 > startIndex){
+			v3 = v3 - 1;
+		}
+
+		globalTriangles[i].setVertexIndices(v1, v2, v3);
+
+	}
+
+}
+
+void Cluster::iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices, std::vector<Triangle> &globalTriangles){
 
 	//Get smallest edge and collapse until there are only 5 edges left
 
-	while(clusterEdges.size() > 5){
-		edgeCollapse(getSmallestEdgeIndex(), false, globalVertices);
+	//This function seems to cause infinity loop problems occasionally!
+
+	while(clusterEdges.size() > 5){  //Change this so that the cluster edges left is n-2 where n is the starting boundary size of the cluster
+
+		if(getSmallestEdgeIndex(globalVertices) != 0){
+
+			std::cout << clusterEdges.size() << "\n";
+
+			for(int i = 0; i < clusterEdges.size(); i++){
+				std::cout << clusterEdges[i].getVertexIndex1() << " " << clusterEdges[i].getVertexIndex2() << " index: "<< i <<" \n";
+			}
+
+			edgeCollapse(getSmallestEdgeIndex(globalVertices), false, globalTriangles, globalVertices);
+
+		} else {
+			// edgeCollapse(5, false, globalVertices);
+			break;
+		}
+
+		// std::cout << "edge array size: " << clusterEdges.size() << "\n";
+
+		// std::cout << "smallest edge: " << getSmallestEdgeIndex() << "\n";
+
 		recalculateEdgeLengths(globalVertices);
 	}
 	
-
 }
 
 void Cluster::recalculateEdgeLengths(std::vector<Vertex> &globalVertices){
@@ -456,9 +527,7 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 
 	// A duplicate triangle is when 3 nodes are used in a triangle more than once.
 
-	//This needs to be optimized!!
-
-	std::vector<Triangle> outputTriangles;
+	// This needs to be optimized!!
 
 	for(int i = 0; i < clusterEdges.size(); i++){
 
@@ -495,8 +564,6 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 		}
 
 		//Now test all edges against each other to see whether they have the same final Edge, If they do then this is a triangle
-
-		//this will be O(n^2)
 
 		for(int x = 0; x < e1.size(); x++){
 			for(int y = 0; y < e2.size(); y++){
@@ -599,15 +666,27 @@ std::vector<Triangle> Cluster::generateOutputTriangles(std::vector<Vertex> &glob
 
 }
 
-int Cluster::getSmallestEdgeIndex(){
+std::vector<Triangle> Cluster::getOutputTriangles(){
+
+	return outputTriangles;
+
+}
+
+int Cluster::getSmallestEdgeIndex(std::vector<Vertex> &globalVertices){
 
 	float smallestValue = 100.0;
 	int smallestIndex = 0;
 
+	//Place the edge lenths into a ordered set 
+
 	for( int i = 0; i < clusterEdges.size(); i++){
 		if(clusterEdges[i].getEdgeLength().getMagnitude() < smallestValue){
-			smallestValue = clusterEdges[i].getEdgeLength().getMagnitude();
-			smallestIndex = i;
+
+
+			if(globalVertices[clusterEdges[i].getVertexIndex1()].getEdgeOfCluster() != true && globalVertices[clusterEdges[i].getVertexIndex2()].getEdgeOfCluster() != true){
+				smallestValue = clusterEdges[i].getEdgeLength().getMagnitude();
+				smallestIndex = i;
+			}
 		}
 	}
 
@@ -638,11 +717,4 @@ void Cluster::assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector
 		}
 	}
 }
-
-
-
-
-
-
-
 

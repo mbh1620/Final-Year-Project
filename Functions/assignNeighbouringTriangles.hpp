@@ -50,7 +50,26 @@ void assignNeighbouringTriangles(std::vector<Triangle> &globalTriangles){
 			if(i != j){
 				if(faceNeighbouring(globalTriangles[i], globalTriangles[j])){
 
-					globalTriangles[i].setNeighbouringTriangle(globalTriangles[j]);
+					globalTriangles[i].setNeighbouringTriangleIndex(j);
+
+				}
+			}
+		}
+	}
+}
+
+void assignNeighbouringTrianglesParallel(std::vector<Triangle> &globalTriangles){
+	
+	// omp_set_num_threads(6);
+
+	// #pragma omp parallel for collapse(2) shared(globalTriangles)
+
+	for(int i = 1; i < globalTriangles.size(); i++){
+		for(int j = 1; j < globalTriangles.size(); j++){
+			if(i != j){
+				if(faceNeighbouring(globalTriangles[i], globalTriangles[j])){
+
+					globalTriangles[i].setNeighbouringTriangleIndex(j);
 
 				}
 			}

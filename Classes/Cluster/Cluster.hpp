@@ -33,21 +33,21 @@ private:
 
 	int id;
 
-	std::list<Triangle> candidateTriangles;
+	std::list<Triangle> candidateTriangles;								// List of potential triangles to add to cluster
 
-	std::vector<Triangle> clusterTriangles;
+	std::vector<Triangle> clusterTriangles;								// List of cluster member triangles
 
-	std::vector<Triangle> outputTriangles;
+	std::vector<Triangle> outputTriangles;								// List of Output triangles created
 
-	std::vector<Edge> clusterEdges;
+	std::vector<Edge> clusterEdges;										// List of cluster member edges
 
-	Vector3D averageClusterNormal;
+	Vector3D averageClusterNormal;										// 3D Vector of the Cluster Normal
 
-	float angleTolerance;
+	float angleTolerance;												// Tolerance angle to check against 
 
-	Vector3D sumOfNormals;
+	Vector3D sumOfNormals;												// Accumulated sum total of Normals
 
-	int countOfTriangles;
+	int countOfTriangles;												// Count of triangles in the cluster
 
 public:
 
@@ -93,17 +93,21 @@ public:
 
 	bool checkValidCollapse();
 
-	void edgeCollapse(int edge, bool reversed, std::vector<Vertex> &globalVertices);
+	void edgeCollapse(int edge, bool reversed,  std::vector<Triangle> &globalTriangles, std::vector<Vertex> &globalVertices);
 
 	void shiftVertexIndices(int fromIndex);
 
-	void iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices);
+	void shiftTriangleVertexIndices(int startIndex, std::vector<Triangle> &globalTriangles);
+
+	void iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices, std::vector<Triangle> &globalTriangles);
 
 	void recalculateEdgeLengths(std::vector<Vertex> &globalVertices);
 
 	std::vector<Triangle> generateOutputTriangles(std::vector<Vertex> &globalVertices);
 
-	int getSmallestEdgeIndex();
+	std::vector<Triangle> getOutputTriangles();
+
+	int getSmallestEdgeIndex(std::vector<Vertex> &globalVertices);
 
 	void assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector<Vertex> &globalVertices);
 

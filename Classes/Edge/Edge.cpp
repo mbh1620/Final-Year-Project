@@ -19,6 +19,8 @@ Edge::Edge(){
 
 Edge::Edge(int _id, int _vertexIndex1, int _vertexIndex2, Vector3D _edgeLength){
 
+	//Constructor for then the edge length is supplied
+
 	id = _id;
 	vertexIndex1 = _vertexIndex1;
 	vertexIndex2 = _vertexIndex2;
@@ -28,6 +30,8 @@ Edge::Edge(int _id, int _vertexIndex1, int _vertexIndex2, Vector3D _edgeLength){
 }
 
 Edge::Edge(int _id, int _vertexIndex1, int _vertexIndex2, std::vector<Vertex> &globalVertices){
+
+	//Constructor for when the edge length needs calculating
 
 	id = _id;
 
@@ -131,10 +135,15 @@ void Edge::displayVertexIndices(){
 
 void Edge::reCalculateEdgeLength(std::vector<Vertex> &globalVertices){
 
+	// Function used to recalculate the Edge length of the Edge.
+
 	Vector3D f1 = Vector3D(1, globalVertices[vertexIndex1].get('x'), globalVertices[vertexIndex1].get('y'), globalVertices[vertexIndex1].get('z'));
 	Vector3D f2 = Vector3D(1, globalVertices[vertexIndex2].get('x'), globalVertices[vertexIndex2].get('y'), globalVertices[vertexIndex2].get('z'));
 
 	edgeLength = f2.distancePositive(f1);
+
+	std::cout <<  "edge length: " << edgeLength.getMagnitude() << "\n";
+
 }
 
 Vector3D Edge::getEdgeLength(){

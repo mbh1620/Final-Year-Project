@@ -37,7 +37,7 @@ Triangle::Triangle(const Triangle& a){
 
 	id = a.id;
 	vertexIndices = a.vertexIndices;
-	neighbouringTriangles = a.neighbouringTriangles;
+	neighbouringTrianglesIndices = a.neighbouringTrianglesIndices;
 	triangleNormal = a.triangleNormal;
 	triangleMaterial = a.triangleMaterial;
 
@@ -47,7 +47,7 @@ Triangle& Triangle:: operator=(const Triangle& a){
 	
 	id = a.id;
 	vertexIndices = a.vertexIndices;
-	neighbouringTriangles = a.neighbouringTriangles;
+	neighbouringTrianglesIndices = a.neighbouringTrianglesIndices;
 	triangleNormal = a.triangleNormal;
 	triangleMaterial = a.triangleMaterial;
 
@@ -92,40 +92,29 @@ void Triangle::setVertexIndices(int v1, int v2, int v3){
 
 }
 
-void Triangle::setNeighbouringTriangles(std::vector<Triangle> &_neighbouringTriangles){
-
-	if(neighbouringTriangles.size() <= 3){
-		neighbouringTriangles = _neighbouringTriangles;
-	} else {
-		std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
-		throw;
-	}
-}
-
 void Triangle::displayNeighbouringTriangles(){
 
-	for(int i = 0; i < neighbouringTriangles.size(); i++){
-		std::cout << neighbouringTriangles[i].getId() << " ";
+	for(int i = 0; i < neighbouringTrianglesIndices.size(); i++){
+		std::cout << neighbouringTrianglesIndices[i] << " ";
 	}
 
 	std::cout << "\n";
 
 }
 
-void Triangle::setNeighbouringTriangle(Triangle &neighbouringTriangle){
+void Triangle::setNeighbouringTriangleIndex(int neighbouringTriangleIndex){
 
-	if(neighbouringTriangles.size() < 3){
-		neighbouringTriangles.push_back(neighbouringTriangle);
+	if(neighbouringTrianglesIndices.size() < 3){
+		neighbouringTrianglesIndices.push_back(neighbouringTriangleIndex);
 	} else {
-		std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
-		throw;
+		// std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
 	}
 
 }
 
-std::vector<Triangle> Triangle::getNeighbouringTriangles(){
+std::vector<int> Triangle::getNeighbouringTriangles(){
 
-	return neighbouringTriangles;
+	return neighbouringTrianglesIndices;
 
 }
 
