@@ -262,7 +262,7 @@ void Cluster::addNeighbouringTriangles(Triangle &targetTriangle, std::vector<Tri
 	for(int i = 0; i < triangleVector[targetTriangle.getId()].getNeighbouringTriangles().size(); i++){
 
 		candidateTriangles.push_back(triangleVector[targetTriangle.getNeighbouringTriangles()[i]]);
-		
+
 	}
 }
 
@@ -318,22 +318,25 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Triangle> &trian
 	int node2 = clusterEdges[edge].getVertexIndex2();
 
 	if(globalVertices[node1].getEdgeOfCluster() == true && globalVertices[node2].getEdgeOfCluster()){
+
 		std::cout << "Edge of Cluster Edge! will not collapse to maintain boundary of cluster! \n";
 
 		//We need to do something with this edge so that it does not get used in the next iteration otherwise an inifinity loop is caused.
-
-
 
 		return;
 	} 
 
 	if(globalVertices[node1].getEdgeOfCluster() == true){
+
 		std::cout << "edgeOfCluster Encountered! Reversing the collapsing Direction \n";
+
 		//Node2 collapse towards node1
 		reversed = false;
 
 	} else if (globalVertices[node2].getEdgeOfCluster() == true){
+
 		std::cout << "edgeOfCluster Encountered! Reversing the collapsing Direction \n";
+
 		//Node1 collapse towards node2
 		reversed = true;
 
@@ -368,8 +371,6 @@ void Cluster::edgeCollapse(int edge, bool reversed, std::vector<Triangle> &trian
 
 		shiftVertexIndices(node1);
 		shiftTriangleVertexIndices(node1, triangles);
-
-	
 
 	} else {
 
@@ -484,7 +485,7 @@ void Cluster::iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices, std::
 
 	//This function seems to cause infinity loop problems occasionally!
 
-	while(clusterEdges.size() > 5){
+	while(clusterEdges.size() > 5){  //Change this so that the cluster edges left is n-2 where n is the starting boundary size of the cluster
 
 		if(getSmallestEdgeIndex(globalVertices) != 0){
 
@@ -508,8 +509,6 @@ void Cluster::iterativelyEdgeCollapse(std::vector<Vertex> &globalVertices, std::
 		recalculateEdgeLengths(globalVertices);
 	}
 	
-
-
 }
 
 void Cluster::recalculateEdgeLengths(std::vector<Vertex> &globalVertices){
@@ -718,3 +717,4 @@ void Cluster::assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector
 		}
 	}
 }
+

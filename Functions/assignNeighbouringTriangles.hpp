@@ -75,8 +75,6 @@ void assignNeighbouringTrianglesParallel(std::vector<Triangle> &globalTriangles)
 			}
 		}
 	}
-
-	// #pragma omp barrier
 }
 
 

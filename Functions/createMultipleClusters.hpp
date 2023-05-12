@@ -107,7 +107,7 @@ std::vector<Triangle> createMultipleClusters(std::vector<Vertex> &vertices, std:
 		clusters.push_back(tempCluster);
 
 	}
-
+	
 	return outputTriangles;
 
 }

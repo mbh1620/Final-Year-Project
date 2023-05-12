@@ -1,7 +1,6 @@
 #include <fstream>
 #include <sstream>
 #include "ReadWriter.hpp"
-
 #include "../Vertex/Vertex.hpp"
 #include "../Triangle/Triangle.hpp"
 #include "../../Functions/stringSplit.hpp"

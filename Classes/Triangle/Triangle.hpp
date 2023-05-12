@@ -78,9 +78,17 @@ public:
 
 	void setVertexIndices(int v1, int v2, int v3);
 
+<<<<<<< HEAD
 	void setNeighbouringTriangleIndex(int neighbouringTriangleIndex);
 
 	std::vector<int> getNeighbouringTriangles();
+=======
+	void setNeighbouringTriangles(std::vector<Triangle> &_neighbouringTriangles);
+
+	void setNeighbouringTriangle(Triangle &neighbouringTriangle);
+
+	std::vector<Triangle> getNeighbouringTriangles();
+>>>>>>> main
 
 	void displayNeighbouringTriangles();
 
