@@ -7,24 +7,3 @@ Kd 0.3 0.5 0.6
 newmtl material-1
 Kd 7.82637e-06 0.131538 0.755605
 
-newmtl material-2
-Kd 0.45865 0.532767 0.218959
-
-newmtl material-3
-Kd 0.0470446 0.678865 0.679296
-
-newmtl material-4
-Kd 0.934693 0.383502 0.519416
-
-newmtl material-5
-Kd 0.830965 0.0345721 0.0534616
-
-newmtl material-6
-Kd 0.5297 0.671149 0.00769819
-
-newmtl material-7
-Kd 0.383416 0.0668422 0.417486
-
-newmtl material-8
-Kd 0.686773 0.588977 0.930436
-

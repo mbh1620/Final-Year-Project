@@ -1,6 +1,5 @@
 #include "Cluster.hpp"
 #include <algorithm>
-#include <omp.h>
 
 //----------------------------------------------------------------
 //						Cluster Class Implementation
@@ -719,11 +718,3 @@ void Cluster::assignEdgeOfClusterVertices(Triangle rejectedTriangle, std::vector
 		}
 	}
 }
-
-
-
-
-
-
-
-

@@ -2,6 +2,7 @@
 #define READWRITER_H
 
 #include "../Triangle/Triangle.hpp"
+#include "../Edge/Edge.hpp"
 //----------------------------------------------------------------
 //						ReadWriter Class
 //----------------------------------------------------------------

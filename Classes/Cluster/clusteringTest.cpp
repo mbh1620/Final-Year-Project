@@ -35,19 +35,19 @@ int main(){
 
 	//Read object into the vertices and triangles vectors
 
-	objReader.readObjFile("protrudingTestCube.obj", vertices, triangles);
+	// objReader.readObjFile("./protrudingTestCube.obj", vertices, triangles);
 
 	//Assign neighbouring triangles
 
-	assignNeighbouringTriangles(triangles);
+	// assignNeighbouringTriangles(triangles);
 
-	std::vector<Edge> edges;
+	// std::vector<Edge> edges;
 
-	edges.push_back(Edge(1, 0, 0, vertices));
+	// edges.push_back(Edge(1, 0, 0, vertices));
 
-	std::vector<Triangle> outputTriangles = createMultipleClusters(vertices, triangles, materials, edges,8, 80);
+	// std::vector<Triangle> outputTriangles = createMultipleClusters(vertices, triangles, materials, edges,8, 80);
 
-	objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, edges, true, true);
+	// objReader.writeObjFile("outputCube", vertices, outputTriangles, materials, edges, true, true);
 
 }
 

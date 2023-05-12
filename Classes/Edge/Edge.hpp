@@ -1,8 +1,8 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-// #include "../Vector3D/Vector3D.cpp"
-// #include "../Vertex/Vertex.cpp"
+#include "../Vector3D/Vector3D.hpp"
+#include "../Vertex/Vertex.hpp"
 
 //----------------------------------------------------------------
 //							Edge Class
@@ -37,13 +37,13 @@ class Edge{
 
 private:
 
-	int id;
+	int id;										//Edge Id
 
-	int vertexIndex1;
+	int vertexIndex1;							//Edge Vertex 1
 
-	int vertexIndex2;
+	int vertexIndex2;							//Edge Vertex 2
 
-	Vector3D edgeLength;
+	Vector3D edgeLength;						//Edge length contained in Vector magnitude
 
 public:
 

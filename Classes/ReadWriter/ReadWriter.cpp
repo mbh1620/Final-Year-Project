@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include "ReadWriter.hpp"
+
 #include "../Vertex/Vertex.hpp"
 #include "../Triangle/Triangle.hpp"
 #include "../../Functions/stringSplit.hpp"
@@ -135,6 +136,8 @@ std::vector<Vertex> ReadWriter::readObjFile(std::string fileName, std::vector<Ve
 
 Vertex ReadWriter::vertexParser(std::string vertexLine, int vertexCount){
 
+	//Function for parsing the vertices in the .obj file
+
 	std::vector<std::string> words = stringSplit(vertexLine, ' ');
 
 	Vertex outputVertex = Vertex(vertexCount, std::stof(words[1]), std::stof(words[2]), std::stof(words[3]));
@@ -144,6 +147,8 @@ Vertex ReadWriter::vertexParser(std::string vertexLine, int vertexCount){
 }
 
 std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleCount, std::vector<Vertex> &vertices){
+
+	//Function for parsing the faces in the file
 
 	std::vector<Triangle> outputTriangles;
 
@@ -203,6 +208,8 @@ std::vector<Triangle> ReadWriter::faceParser(std::string faceLine, int triangleC
 }
 
 void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex> &vertices, std::vector<Triangle> &triangles, std::vector<Material> &materials, std::vector<Edge> &edges, bool materialFile, bool colourClusters){
+
+	//Write all of the elements to file
 
 	std::ofstream file;
 
@@ -275,6 +282,8 @@ void ReadWriter::writeObjFile(std::string fileName, std::vector<Vertex> &vertice
 }
 
 void ReadWriter::writeMtlFile(std::string fileName, std::vector<Material> &materials){
+
+	//Write the materials to file
 
 	std::ofstream file;
 

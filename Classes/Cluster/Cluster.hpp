@@ -33,21 +33,21 @@ private:
 
 	int id;
 
-	std::list<Triangle> candidateTriangles;
+	std::list<Triangle> candidateTriangles;								// List of potential triangles to add to cluster
 
-	std::vector<Triangle> clusterTriangles;
+	std::vector<Triangle> clusterTriangles;								// List of cluster member triangles
 
-	std::vector<Triangle> outputTriangles;
+	std::vector<Triangle> outputTriangles;								// List of Output triangles created
 
-	std::vector<Edge> clusterEdges;
+	std::vector<Edge> clusterEdges;										// List of cluster member edges
 
-	Vector3D averageClusterNormal;
+	Vector3D averageClusterNormal;										// 3D Vector of the Cluster Normal
 
-	float angleTolerance;
+	float angleTolerance;												// Tolerance angle to check against 
 
-	Vector3D sumOfNormals;
+	Vector3D sumOfNormals;												// Accumulated sum total of Normals
 
-	int countOfTriangles;
+	int countOfTriangles;												// Count of triangles in the cluster
 
 public:
 

@@ -107,8 +107,7 @@ void Triangle::setNeighbouringTriangleIndex(int neighbouringTriangleIndex){
 	if(neighbouringTrianglesIndices.size() < 3){
 		neighbouringTrianglesIndices.push_back(neighbouringTriangleIndex);
 	} else {
-		std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
-		throw;
+		// std::cout << "Error: Maximum number of neighbouring Triangles Reached!";
 	}
 
 }

@@ -7,7 +7,7 @@
 
 /* 
 
-Class Description
+	Material Class used to highlight various parts of the model 
 
 */
 
